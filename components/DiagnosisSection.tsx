@@ -77,10 +77,10 @@ const DiagnosisSection: React.FC = () => {
 
   const getRiskResult = (score: number) => {
     if (score < 7) return { level: 'Düşük Risk', risk: '%1', color: 'text-green-400', bg: 'bg-green-500/20 border-green-500' };
-    if (score < 12) return { level: 'Hafif Yüksek', risk: '%4', color: 'text-yellow-400', bg: 'bg-yellow-500/20 border-yellow-500' };
+    if (score < 12) return { level: 'Hafif Risk', risk: '%4', color: 'text-yellow-400', bg: 'bg-yellow-500/20 border-yellow-500' };
     if (score < 15) return { level: 'Orta Risk', risk: '%17', color: 'text-orange-400', bg: 'bg-orange-500/20 border-orange-500' };
     if (score < 21) return { level: 'Yüksek Risk', risk: '%33', color: 'text-red-400', bg: 'bg-red-500/20 border-red-500' };
-    return { level: 'Çok Yüksek', risk: '%50', color: 'text-rose-500', bg: 'bg-rose-600/20 border-rose-600' };
+    return { level: 'Çok Yüksek Risk', risk: '%50', color: 'text-rose-500', bg: 'bg-rose-600/20 border-rose-600' };
   };
 
   const findriskQuestions: FindriskQuestion[] = [
@@ -276,7 +276,7 @@ const DiagnosisSection: React.FC = () => {
           </div>
 
           {/* Interactive FINDRISK Component */}
-          <div className="bg-slate-900 text-white p-6 rounded-2xl relative flex flex-col h-full min-h-[500px] shadow-xl">
+          <div className="bg-slate-900 text-white p-6 rounded-2xl relative flex flex-col h-full min-h-[550px] shadow-xl">
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500 rounded-full blur-3xl opacity-10 -mr-16 -mt-16 pointer-events-none"></div>
             
             {/* Header */}
@@ -300,18 +300,30 @@ const DiagnosisSection: React.FC = () => {
             {/* Step 0: Intro */}
             {quizStep === 0 && (
               <div className="relative z-10 flex flex-col h-full justify-center animate-in fade-in duration-300">
-                <p className="text-slate-300 mb-8 text-center leading-relaxed">
-                  FINDRISK (Finlandiya Diyabet Risk Skoru), gelecek 10 yıl içinde Tip 2 Diyabet geliştirme riskinizi belirlemek için kullanılan, bilimsel olarak kanıtlanmış 8 soruluk bir testtir.
+                <p className="text-slate-300 mb-6 text-center leading-relaxed text-sm">
+                  FINDRISK (Finlandiya Diyabet Risk Skoru), gelecek 10 yıl içinde Tip 2 Diyabet geliştirme riskinizi belirler.
                 </p>
                 
-                <div className="space-y-3 mb-8">
-                  <div className="flex justify-between items-center bg-slate-800/50 p-3 rounded">
-                    <span className="text-sm text-slate-300">Düşük Risk (%1)</span>
-                    <span className="bg-green-500/20 text-green-400 text-xs font-bold px-2 py-1 rounded">&lt; 7 Puan</span>
+                <div className="grid grid-cols-2 gap-3 mb-8">
+                  <div className="bg-slate-800/50 p-3 rounded-lg border border-green-500/20 flex flex-col items-center text-center transition-colors hover:bg-slate-800">
+                    <span className="text-xs text-slate-400 mb-1">Düşük Risk</span>
+                    <span className="text-green-400 font-bold text-sm">&lt; 7 Puan</span>
+                    <span className="text-[10px] text-slate-500 mt-1">%1 Olasılık</span>
                   </div>
-                  <div className="flex justify-between items-center bg-slate-800/50 p-3 rounded">
-                    <span className="text-sm text-slate-300">Yüksek Risk (%33)</span>
-                    <span className="bg-red-500/20 text-red-400 text-xs font-bold px-2 py-1 rounded">15-20 Puan</span>
+                  <div className="bg-slate-800/50 p-3 rounded-lg border border-yellow-500/20 flex flex-col items-center text-center transition-colors hover:bg-slate-800">
+                    <span className="text-xs text-slate-400 mb-1">Hafif/Orta</span>
+                    <span className="text-yellow-400 font-bold text-sm">7-14 Puan</span>
+                    <span className="text-[10px] text-slate-500 mt-1">%4-%17 Olasılık</span>
+                  </div>
+                  <div className="bg-slate-800/50 p-3 rounded-lg border border-orange-500/20 flex flex-col items-center text-center transition-colors hover:bg-slate-800">
+                    <span className="text-xs text-slate-400 mb-1">Yüksek</span>
+                    <span className="text-orange-400 font-bold text-sm">15-20 Puan</span>
+                    <span className="text-[10px] text-slate-500 mt-1">%33 Olasılık</span>
+                  </div>
+                  <div className="bg-slate-800/50 p-3 rounded-lg border border-red-500/20 flex flex-col items-center text-center transition-colors hover:bg-slate-800">
+                    <span className="text-xs text-slate-400 mb-1">Çok Yüksek</span>
+                    <span className="text-rose-500 font-bold text-sm">&gt; 20 Puan</span>
+                    <span className="text-[10px] text-slate-500 mt-1">%50 Olasılık</span>
                   </div>
                 </div>
 
@@ -406,12 +418,16 @@ const DiagnosisSection: React.FC = () => {
                   <p className={`text-2xl font-bold ${getRiskResult(totalScore).color}`}>{getRiskResult(totalScore).risk}</p>
                 </div>
 
-                <p className="text-slate-400 text-sm mb-8">
-                  {totalScore >= 15 
-                    ? "Sonucunuz yüksek risk grubunda olduğunuzu gösteriyor. En kısa sürede bir sağlık kuruluşuna başvurarak AKŞ ve HbA1c testlerinizi yaptırmanız önerilir."
-                    : totalScore >= 12 
-                      ? "Orta risk grubundasınız. Yaşam tarzı değişiklikleri (beslenme ve egzersiz) ile bu riski düşürebilirsiniz."
-                      : "Risk seviyeniz düşük. Sağlıklı yaşam alışkanlıklarınızı korumaya devam edin."}
+                <p className="text-slate-400 text-sm mb-8 px-4">
+                  {totalScore >= 21 
+                    ? "Risk seviyeniz çok yüksek. Diyabet hastası olma ihtimaliniz %50. Vakit kaybetmeden dahiliye/endokrinoloji uzmanına başvurunuz."
+                    : totalScore >= 15 
+                      ? "Yüksek risk grubundasınız. En kısa sürede AKŞ ve HbA1c testlerinizi yaptırmanız ve yaşam tarzınızı değiştirmeniz önerilir."
+                      : totalScore >= 12 
+                        ? "Orta düzeyde riskiniz var. Beslenme alışkanlıklarınızı gözden geçirmeli ve hareketinizi artırmalısınız."
+                        : totalScore >= 7
+                          ? "Risk seviyeniz hafif yüksek. Gelecekte diyabet hastası olmamak için önlem almaya şimdiden başlamalısınız."
+                          : "Risk seviyeniz şu an için düşük. Sağlıklı yaşam alışkanlıklarınızı korumaya devam edin."}
                 </p>
 
                 <button 

@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, CheckCircle, XCircle, ArrowRight, RefreshCw, Play, Trophy, RotateCcw, Sparkles, ExternalLink } from 'lucide-react';
+import { BookOpen, CheckCircle, XCircle, ArrowLeft, ArrowRight, RefreshCw, Play, Trophy, RotateCcw, Sparkles, ExternalLink, Home } from 'lucide-react';
 import { cases, CaseStudy, Topic, topicLabels } from './cases/caseData';
 
 interface QuizItem {
@@ -32,8 +32,9 @@ const CaseStudies: React.FC = () => {
   const [phase, setPhase] = useState<'select' | 'quiz' | 'result'>('select');
   const [items, setItems] = useState<QuizItem[]>([]);
   const [index, setIndex] = useState(0);
-  const [selected, setSelected] = useState<number | null>(null);
-  const [results, setResults] = useState<Record<string, boolean>>({});
+  // Chosen option per case id; kept so earlier questions can be revisited
+  const [answers, setAnswers] = useState<Record<string, number>>({});
+  const [quizActive, setQuizActive] = useState(false);
 
   const pool = useMemo(
     () => cases.filter(c => selectedTopics.has(c.topic) && (!onlyNew || c.isNew)),
@@ -48,35 +49,65 @@ const CaseStudies: React.FC = () => {
     return next;
   });
 
+  const isRight = (it: QuizItem) => answers[it.c.id] === it.correct;
+
   const start = (list: CaseStudy[]) => {
     setItems(list.map(toQuizItem));
     setIndex(0);
-    setSelected(null);
-    setResults({});
+    setAnswers({});
+    setQuizActive(true);
     setPhase('quiz');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const choose = (i: number) => {
-    if (selected !== null) return;
-    setSelected(i);
-    const item = items[index];
-    setResults(r => ({ ...r, [item.c.id]: i === item.correct }));
+    const id = items[index].c.id;
+    if (answers[id] !== undefined) return;
+    setAnswers(a => ({ ...a, [id]: i }));
   };
 
-  const next = () => {
-    if (index < items.length - 1) {
-      setIndex(index + 1);
-      setSelected(null);
-    } else {
-      setPhase('result');
-    }
+  const goTo = (i: number) => {
+    setIndex(i);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const finish = () => {
+    setQuizActive(false);
+    setPhase('result');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const prev = () => { if (index > 0) goTo(index - 1); };
+  const next = () => (index < items.length - 1 ? goTo(index + 1) : finish());
+  const toHome = () => { setPhase('select'); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+
+  // Keyboard shortcuts: left / right arrow for previous / next question
+  useEffect(() => {
+    if (phase !== 'quiz') return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.altKey || e.ctrlKey || e.metaKey) return;
+      if (e.key === 'ArrowLeft') prev();
+      if (e.key === 'ArrowRight') next();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  });
 
   // ---------- Selection screen ----------
   if (phase === 'select') {
     return (
       <Shell>
+        {quizActive && items.length > 0 && (
+          <div className="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-indigo-50 border border-indigo-200 rounded-2xl p-4">
+            <span className="text-sm text-indigo-900">
+              Devam eden test: <strong>Soru {index + 1} / {items.length}</strong> · {Object.keys(answers).length} yanıt
+            </span>
+            <button onClick={() => setPhase('quiz')}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center justify-center gap-2">
+              Teste devam et <ArrowRight size={16} />
+            </button>
+          </div>
+        )}
         <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8">
           <h3 className="text-xl font-bold text-slate-900 mb-1">Konuları seçin</h3>
           <p className="text-sm text-slate-500 mb-6">Seçtiğiniz konulardaki vakalar sırayla sorulur; seçenekler her testte karıştırılır.</p>
@@ -113,13 +144,14 @@ const CaseStudies: React.FC = () => {
 
   // ---------- Result screen ----------
   if (phase === 'result') {
-    const correctCount = items.filter(it => results[it.c.id]).length;
+    const correctCount = items.filter(isRight).length;
     const pct = Math.round((correctCount / items.length) * 100);
-    const wrong = items.filter(it => !results[it.c.id]);
+    const wrong = items.filter(it => !isRight(it));
+    const skippedCount = items.filter(it => answers[it.c.id] === undefined).length;
     const byTopic = topics
       .map(t => {
         const inTopic = items.filter(it => it.c.topic === t);
-        return { t, total: inTopic.length, ok: inTopic.filter(it => results[it.c.id]).length };
+        return { t, total: inTopic.length, ok: inTopic.filter(isRight).length };
       })
       .filter(x => x.total > 0);
 
@@ -129,7 +161,7 @@ const CaseStudies: React.FC = () => {
           <div className="text-center mb-8">
             <Trophy size={40} className="mx-auto text-amber-500 mb-3" />
             <div className="text-4xl font-bold text-slate-900">{correctCount} / {items.length}</div>
-            <div className="text-slate-500 mt-1">%{pct} doğru</div>
+            <div className="text-slate-500 mt-1">%{pct} doğru{skippedCount > 0 && ` · ${skippedCount} soru boş bırakıldı`}</div>
           </div>
 
           <div className="grid sm:grid-cols-2 gap-2 mb-8">
@@ -143,11 +175,11 @@ const CaseStudies: React.FC = () => {
 
           {wrong.length > 0 && (
             <div className="mb-8">
-              <h3 className="font-bold text-slate-900 mb-3">Yanlış yanıtlanan vakalar</h3>
+              <h3 className="font-bold text-slate-900 mb-3">Yanlış veya boş bırakılan vakalar</h3>
               <ul className="space-y-3">
                 {wrong.map(it => (
                   <li key={it.c.id} className="border border-red-100 bg-red-50/50 rounded-xl p-4 text-sm">
-                    <div className="font-semibold text-slate-900">{it.c.title}</div>
+                    <div className="font-semibold text-slate-900">{it.c.title}{answers[it.c.id] === undefined && <span className="ml-2 text-xs font-normal text-slate-500">(boş)</span>}</div>
                     <div className="text-slate-700 mt-1"><span className="text-green-700 font-semibold">Doğru yanıt:</span> {it.options[it.correct]}</div>
                   </li>
                 ))}
@@ -174,21 +206,26 @@ const CaseStudies: React.FC = () => {
 
   // ---------- Quiz screen ----------
   const item = items[index];
+  const selected = answers[item.c.id] ?? null;
   const answered = selected !== null;
   const isCorrect = selected === item.correct;
-  const score = Object.values(results).filter(Boolean).length;
+  const score = items.filter(isRight).length;
+  const isLast = index === items.length - 1;
 
   return (
     <Shell>
-      <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
-        <div className="w-full bg-slate-100 h-2">
+      <div className="bg-white rounded-2xl shadow-lg border border-slate-200">
+        <div className="w-full bg-slate-100 h-2 rounded-t-2xl overflow-hidden">
           <div className="bg-indigo-500 h-2 transition-all duration-300" style={{ width: `${((index + 1) / items.length) * 100}%` }} />
         </div>
 
         <div className="p-6 md:p-8">
           <div className="flex flex-wrap justify-between items-center gap-2 mb-6">
             <span className="text-sm font-bold text-indigo-600 tracking-wider uppercase">Soru {index + 1} / {items.length}</span>
-            <span className="text-sm text-slate-500">Puan: <strong className="text-slate-900">{score}</strong></span>
+            <span className="flex items-center gap-4 text-sm text-slate-500">
+              <span>Puan: <strong className="text-slate-900">{score}</strong></span>
+              <button onClick={finish} className="underline">Testi bitir</button>
+            </span>
           </div>
 
           <div className="flex flex-wrap items-center gap-2 mb-3">
@@ -237,7 +274,7 @@ const CaseStudies: React.FC = () => {
 
           {answered && (
             <div className="mt-8">
-              <div className={`p-5 rounded-xl mb-6 ${isCorrect ? 'bg-green-100 text-green-900' : 'bg-red-50 text-red-900'}`} aria-live="polite">
+              <div className={`p-5 rounded-xl ${isCorrect ? 'bg-green-100 text-green-900' : 'bg-red-50 text-red-900'}`} aria-live="polite">
                 <div className="font-bold mb-2 flex items-center gap-2 text-lg">
                   {isCorrect ? <><CheckCircle className="text-green-600" /> Doğru!</> : <><XCircle className="text-red-600" /> Yanlış</>}
                 </div>
@@ -248,16 +285,27 @@ const CaseStudies: React.FC = () => {
                   </Link>
                 )}
               </div>
-              <div className="flex justify-between items-center">
-                <button onClick={() => setPhase('result')} className="text-sm text-slate-500 underline">Testi bitir</button>
-                <button onClick={next}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-colors shadow-lg shadow-indigo-200">
-                  {index < items.length - 1 ? <>Sonraki soru <ArrowRight size={20} /></> : <>Sonuçları gör <Trophy size={18} /></>}
-                </button>
-              </div>
             </div>
           )}
         </div>
+
+        <nav aria-label="Soru gezinme"
+          className="sticky bottom-0 z-10 grid grid-cols-3 items-center gap-2 px-4 md:px-8 py-3 bg-white/95 backdrop-blur border-t border-slate-200 rounded-b-2xl">
+          <button onClick={prev} disabled={index === 0}
+            className="justify-self-start flex items-center gap-1.5 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 disabled:opacity-30 disabled:hover:bg-transparent">
+            <ArrowLeft size={18} /> <span>Önceki<span className="hidden sm:inline"> soru</span></span>
+          </button>
+          <button onClick={toHome}
+            className="justify-self-center flex items-center gap-1.5 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100">
+            <Home size={18} /> <span>Test<span className="hidden sm:inline"> ana sayfası</span></span>
+          </button>
+          <button onClick={next}
+            className={`justify-self-end flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-bold transition-colors ${answered ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-200' : 'text-indigo-700 border border-indigo-200 hover:bg-indigo-50'}`}>
+            {isLast
+              ? <><span>Sonuçlar</span> <Trophy size={18} /></>
+              : <><span>{answered ? 'Sonraki' : 'Atla'}<span className="hidden sm:inline"> soru</span></span> <ArrowRight size={18} /></>}
+          </button>
+        </nav>
       </div>
     </Shell>
   );

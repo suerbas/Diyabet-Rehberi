@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
           </span>
         </div>
         <p className="max-w-2xl mx-auto text-sm mb-8">
-          Bu içerik T.C. Sağlık Bakanlığı, TEMD 2024 Kılavuzu, ADA 2025 Standartları ve IDF Diabetes Atlas verileri kaynak alınarak sağlık profesyonelleri ve hastalar için bilgilendirme amaçlı hazırlanmıştır. Tanı ve tedavi için mutlaka hekiminize başvurunuz.
+          Bu içerik T.C. Sağlık Bakanlığı, TEMD 2026 Kılavuzu, ADA Standartları ve IDF Diabetes Atlas verileri kaynak alınarak sağlık profesyonelleri ve hastalar için bilgilendirme amaçlı hazırlanmıştır. Tanı ve tedavi için mutlaka hekiminize başvurunuz.
         </p>
         <div className="flex justify-center gap-6 text-sm font-medium">
           <a href="#" className="hover:text-white transition-colors">TEMD Kılavuzu</a>
@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
           <a href="#" className="hover:text-white transition-colors">Sağlık Bakanlığı</a>
         </div>
         <div className="mt-8 text-xs text-slate-600">
-          &copy; 2025 Tüm hakları saklıdır.
+          &copy; 2026 Tüm hakları saklıdır.
         </div>
       </div>
     </footer>

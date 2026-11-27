@@ -1,106 +1,74 @@
 import React, { useState } from 'react';
-import { Eye, Brain, Heart, Activity } from 'lucide-react';
+import { ClipboardCheck, Siren, HeartPulse, Droplets, Footprints, FlaskConical, Info } from 'lucide-react';
+import ScreeningSchedule from './complications/ScreeningSchedule';
+import AcuteComplications from './complications/AcuteComplications';
+import Cardiovascular from './complications/Cardiovascular';
+import KidneyEye from './complications/KidneyEye';
+import NeuropathyFoot from './complications/NeuropathyFoot';
+import LiverFib4 from './complications/LiverFib4';
+
+const tabs = [
+  { id: 'tarama', label: 'Tarama Takvimi', icon: <ClipboardCheck size={18} />, intro: 'Her vizit kontrol listesi, yıllık tarama takvimi ve erişkin aşıları.' },
+  { id: 'akut', label: 'Akut', icon: <Siren size={18} />, intro: 'Hipoglisemi düzeyleri ve 15-15 kuralı, DKA/HHD ayrımı ve hasta günü kuralları.' },
+  { id: 'kv', label: 'Kardiyovasküler', icon: <HeartPulse size={18} />, intro: 'Risk kategorisine göre LDL hedefi, statin yoğunluğu, hipertansiyon ve antiagregan.' },
+  { id: 'bobrek-goz', label: 'Böbrek & Göz', icon: <Droplets size={18} />, intro: 'DKBH’de 4 sütunlu nefroproteksiyon, retinopati evreleri ve NAION farkındalığı.' },
+  { id: 'ayak', label: 'Nöropati & Ayak', icon: <Footprints size={18} />, intro: 'Ipswich dokunma testi, ağrılı ve otonom nöropati, diyabetik ayak ülseri ve bakım kuralları.' },
+  { id: 'karaciger', label: 'Karaciğer', icon: <FlaskConical size={18} />, intro: 'FIB-4 hesaplayıcı ile MASLD’de ileri fibroz riski ve yönlendirme.' },
+] as const;
+
+type TabId = typeof tabs[number]['id'];
 
 const Complications: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'micro' | 'macro'>('macro');
+  const [active, setActive] = useState<TabId>('tarama');
+  const current = tabs.find(t => t.id === active)!;
 
   return (
-    <section id="complications" className="py-20 bg-slate-50">
+    <section id="complications" className="py-16 bg-slate-50 min-h-screen">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900">Komplikasyon Yönetimi</h2>
-          <p className="text-slate-600 mt-4">Diyabet "Kardiyovasküler Risk Eşdeğeri" olarak kabul edilir. Erken tarama esastır.</p>
+        <div className="text-center mb-8">
+          <span className="inline-block text-xs font-bold uppercase tracking-wider text-primary bg-sky-100 px-3 py-1 rounded-full mb-3">TEMD 2026 ile güncellendi</span>
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900">Komplikasyon Tarama ve Yönetimi</h2>
+          <p className="text-slate-600 mt-3 max-w-2xl mx-auto">
+            Erken tarama ve çok yönlü risk kontrolü (glisemi, KB, lipid, böbrek, karaciğer) komplikasyonları önlemenin temelidir.
+          </p>
         </div>
 
-        <div className="max-w-4xl mx-auto">
-          <div className="flex justify-center gap-4 mb-8">
-            <button
-              onClick={() => setActiveTab('macro')}
-              className={`px-6 py-2 rounded-full font-semibold transition-all ${activeTab === 'macro' ? 'bg-blue-600 text-white shadow-lg' : 'bg-white text-slate-600 hover:bg-slate-100'}`}
-            >
-              Makrovasküler
-            </button>
-            <button
-              onClick={() => setActiveTab('micro')}
-              className={`px-6 py-2 rounded-full font-semibold transition-all ${activeTab === 'micro' ? 'bg-blue-600 text-white shadow-lg' : 'bg-white text-slate-600 hover:bg-slate-100'}`}
-            >
-              Mikrovasküler
-            </button>
+        <div className="sticky top-[68px] z-30 -mx-4 px-4 py-3 bg-slate-50/95 backdrop-blur mb-6">
+          <div role="tablist" className="flex gap-2 overflow-x-auto hide-scrollbar max-w-5xl mx-auto bg-white border border-slate-200 rounded-2xl p-1.5 shadow-sm">
+            {tabs.map(t => (
+              <button
+                key={t.id}
+                role="tab"
+                aria-selected={active === t.id}
+                onClick={() => {
+                  setActive(t.id);
+                  const top = document.getElementById('complications-tabs')?.getBoundingClientRect().top;
+                  if (top !== undefined && top < 0) window.scrollBy({ top: top - 80, behavior: 'smooth' });
+                }}
+                className={`flex-1 min-w-max flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${active === t.id ? 'bg-primary text-white shadow' : 'text-slate-600 hover:bg-slate-100'}`}
+              >
+                {t.icon}{t.label}
+              </button>
+            ))}
           </div>
+        </div>
 
-          <div className="bg-white rounded-2xl p-8 shadow-sm min-h-[400px]">
-            {activeTab === 'macro' ? (
-              <div className="grid md:grid-cols-2 gap-8 animate-in fade-in duration-500">
-                <div>
-                  <div className="flex items-center gap-3 mb-4 text-blue-700">
-                    <Heart className="w-8 h-8" />
-                    <h3 className="text-2xl font-bold">Kalp & Damar</h3>
-                  </div>
-                  <p className="text-slate-600 mb-4">
-                    Tip 2 diyabetlilerde koroner arter hastalığı ve inme riski 2-4 kat artar. Ölümlerin %60-75'i KVH kaynaklıdır.
-                  </p>
-                  <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
-                    <h4 className="font-bold text-blue-900 mb-2">Korunma Hedefleri</h4>
-                    <ul className="text-sm text-blue-800 space-y-2">
-                      <li>• LDL &lt; 70 mg/dL (Yüksek riskte &lt; 55)</li>
-                      <li>• Tansiyon &lt; 140/90 (Genç/Riskli &lt; 130/80)</li>
-                      <li>• Sigara: Tamamen bırakılmalı</li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div className="p-4 border border-slate-100 rounded-xl hover:border-blue-200 transition-colors">
-                    <h4 className="font-bold text-slate-800">Sessiz İskemi</h4>
-                    <p className="text-sm text-slate-500 mt-1">Otonom nöropati nedeniyle göğüs ağrısı olmayabilir. Nefes darlığı ve yorgunluk anjina eşdeğeri olabilir.</p>
-                  </div>
-                  <div className="p-4 border border-slate-100 rounded-xl hover:border-blue-200 transition-colors">
-                    <h4 className="font-bold text-slate-800">Periferik Arter</h4>
-                    <p className="text-sm text-slate-500 mt-1">Yürürken bacak ağrısı (kladikasyo). Nabız muayenesi şarttır.</p>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="grid md:grid-cols-2 gap-8 animate-in fade-in duration-500">
-                <div className="space-y-6">
-                  <div className="flex gap-4">
-                    <div className="p-3 bg-purple-100 rounded-lg h-fit text-purple-600"><Eye size={24}/></div>
-                    <div>
-                      <h4 className="font-bold text-slate-800">Retinopati</h4>
-                      <p className="text-sm text-slate-600">Tanı anında ve sonrasında yılda bir göz dibi muayenesi.</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-4">
-                    <div className="p-3 bg-orange-100 rounded-lg h-fit text-orange-600"><Activity size={24}/></div>
-                    <div>
-                      <h4 className="font-bold text-slate-800">Nefropati</h4>
-                      <p className="text-sm text-slate-600">Yılda bir idrar albümin/kreatinin oranı ve eGFR takibi. ACEİ/ARB kullanımı nefroprotektiftir.</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-4">
-                    <div className="p-3 bg-teal-100 rounded-lg h-fit text-teal-600"><Brain size={24}/></div>
-                    <div>
-                      <h4 className="font-bold text-slate-800">Nöropati</h4>
-                      <p className="text-sm text-slate-600">Yılda bir monofilament testi. Ayak bakımı eğitimi ile amputasyon %50 önlenebilir.</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
-                  <h3 className="font-bold text-slate-900 mb-4">Diyabetik Ayak: 3'lü Mekanizma</h3>
-                  <ul className="space-y-4 text-sm">
-                    <li className="bg-white p-3 rounded shadow-sm">
-                      <span className="font-bold text-red-500">1. Nöropati:</span> Duyu kaybı (ağrıyı hissetmez).
-                    </li>
-                    <li className="bg-white p-3 rounded shadow-sm">
-                      <span className="font-bold text-red-500">2. İskemi:</span> Kanlanma bozukluğu, iyileşme gecikir.
-                    </li>
-                    <li className="bg-white p-3 rounded shadow-sm">
-                      <span className="font-bold text-red-500">3. Enfeksiyon:</span> Derin doku hasarı ve osteomiyelit riski.
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            )}
-          </div>
+        <p id="complications-tabs" className="text-center text-sm text-slate-500 max-w-2xl mx-auto mb-8">{current.intro}</p>
+
+        <div role="tabpanel">
+          {active === 'tarama' && <ScreeningSchedule />}
+          {active === 'akut' && <AcuteComplications />}
+          {active === 'kv' && <Cardiovascular />}
+          {active === 'bobrek-goz' && <KidneyEye />}
+          {active === 'ayak' && <NeuropathyFoot />}
+          {active === 'karaciger' && <LiverFib4 />}
+        </div>
+
+        <div className="max-w-4xl mx-auto mt-14 flex gap-3 bg-white border border-slate-200 rounded-xl p-4 text-xs text-slate-500">
+          <Info size={16} className="shrink-0 mt-0.5" />
+          <span>
+            Bu bölüm birinci basamak hekimleri için karar destek amaçlıdır ve TEMD Diabetes Mellitus Kılavuzu 2026 özetine dayanır. Eşik ve dozlar kılavuzun tam metniyle birlikte değerlendirilmelidir; nihai karar hastaya özgü klinik değerlendirmeye aittir.
+          </span>
         </div>
       </div>
     </section>

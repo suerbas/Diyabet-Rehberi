@@ -1,0 +1,144 @@
+import React, { useState } from 'react';
+import { HeartPulse, Gauge, Pill, Check } from 'lucide-react';
+import { SectionTitle, DataTable, Card, Bullets, NumField, parseNum } from '../shared/ui';
+
+type Risk = 'cokYuksek' | 'yuksek' | 'orta';
+
+const riskInfo: Record<Risk, { label: string; ldl: number; nonHdl: number; halve: boolean; tone: string }> = {
+  cokYuksek: { label: 'Çok yüksek risk', ldl: 55, nonHdl: 85, halve: true, tone: 'bg-rose-600' },
+  yuksek: { label: 'Yüksek risk', ldl: 70, nonHdl: 100, halve: true, tone: 'bg-orange-500' },
+  orta: { label: 'Orta risk', ldl: 100, nonHdl: 130, halve: false, tone: 'bg-amber-500' },
+};
+
+const veryHighCriteria = [
+  { id: 'askvh', label: 'ASKVH (koroner, serebrovasküler, periferik arter)' },
+  { id: 'organ', label: 'Hedef organ hasarı: eGFR < 45, AKO > 300, retinopati veya nöropati' },
+  { id: 'rf3', label: '≥ 3 majör risk faktörü (yaş, HT, dislipidemi, sigara, obezite)' },
+];
+const highCriteria = [
+  { id: 'sure10', label: 'Diyabet süresi ≥ 10 yıl' },
+  { id: 'rf12', label: '1-2 ek risk faktörü' },
+];
+
+const LdlTargetTool: React.FC = () => {
+  const [sel, setSel] = useState<Set<string>>(new Set());
+  const [ldlText, setLdlText] = useState('');
+  const toggle = (id: string) => setSel(p => { const n = new Set(p); n.has(id) ? n.delete(id) : n.add(id); return n; });
+
+  const risk: Risk = veryHighCriteria.some(c => sel.has(c.id)) ? 'cokYuksek' : highCriteria.some(c => sel.has(c.id)) ? 'yuksek' : 'orta';
+  const info = riskInfo[risk];
+  const ldl = parseNum(ldlText);
+
+  let needed: string | null = null;
+  if (ldl !== null && ldl > 0) {
+    const target = info.halve ? Math.min(info.ldl, ldl * 0.5) : info.ldl;
+    const pct = Math.max(0, Math.round((1 - target / ldl) * 100));
+    needed = pct === 0
+      ? 'LDL-K hedefte; mevcut tedaviyi sürdür.'
+      : `Hedef LDL-K ≤ ${Math.round(target)} mg/dL → yaklaşık %${pct} düşüş gerekir. ${pct >= 50 ? 'Yüksek yoğunluklu statin; yetmezse ezetimib, ardından PCSK9 inhibitörü.' : pct >= 30 ? 'En az orta yoğunluklu statin.' : 'Orta yoğunluklu statin genellikle yeterli.'}`;
+  }
+
+  const Check2: React.FC<{ id: string; label: string }> = ({ id, label }) => {
+    const on = sel.has(id);
+    return (
+      <button onClick={() => toggle(id)} aria-pressed={on} className={`w-full flex items-start gap-3 p-3 rounded-xl border text-left text-sm transition-colors ${on ? 'border-primary bg-sky-50' : 'border-slate-200 hover:bg-slate-50'}`}>
+        <span className={`mt-0.5 w-5 h-5 rounded-md border flex items-center justify-center shrink-0 ${on ? 'bg-primary border-primary text-white' : 'border-slate-300 bg-white'}`}>{on && <Check size={14} />}</span>
+        <span className="text-slate-800">{label}</span>
+      </button>
+    );
+  };
+
+  return (
+    <div className="grid lg:grid-cols-2 gap-6 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+      <div className="space-y-4">
+        <div>
+          <div className="text-xs font-bold uppercase tracking-wide text-rose-700 mb-2">Çok yüksek risk kriterleri</div>
+          <div className="space-y-2">{veryHighCriteria.map(c => <Check2 key={c.id} {...c} />)}</div>
+        </div>
+        <div>
+          <div className="text-xs font-bold uppercase tracking-wide text-orange-700 mb-2">Yüksek risk kriterleri</div>
+          <div className="space-y-2">{highCriteria.map(c => <Check2 key={c.id} {...c} />)}</div>
+        </div>
+        <p className="text-xs text-slate-500">Hiçbiri yoksa orta risk: genç (Tip 1 &lt; 35, Tip 2 &lt; 50 yaş), süre &lt; 10 yıl, ek risk faktörü yok.</p>
+      </div>
+      <div>
+        <div className={`rounded-2xl text-white p-5 ${info.tone}`}>
+          <div className="text-sm opacity-90">Risk kategorisi</div>
+          <div className="text-2xl font-bold">{info.label}</div>
+          <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
+            <div className="bg-white/20 rounded-lg p-3"><div className="opacity-90">LDL-K hedefi</div><div className="text-xl font-bold">&lt; {info.ldl} mg/dL</div>{info.halve && <div className="text-xs">ve ≥ %50 azalma</div>}</div>
+            <div className="bg-white/20 rounded-lg p-3"><div className="opacity-90">Non-HDL-K hedefi</div><div className="text-xl font-bold">&lt; {info.nonHdl} mg/dL</div></div>
+          </div>
+        </div>
+        <div className="mt-4">
+          <NumField label="Mevcut LDL-K (isteğe bağlı)" value={ldlText} onChange={setLdlText} placeholder="örn. 130" suffix="mg/dL" />
+          {needed && <p className="mt-3 text-sm text-slate-700 bg-slate-50 border border-slate-200 rounded-lg p-3" aria-live="polite">{needed}</p>}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Cardiovascular: React.FC = () => (
+  <div className="max-w-5xl mx-auto space-y-12">
+    <div>
+      <SectionTitle icon={<HeartPulse size={20} />} sub="Kriterleri işaretleyin; risk kategorisi ve LDL-K hedefi hesaplanır.">KV risk kategorisi ve LDL hedefi</SectionTitle>
+      <LdlTargetTool />
+      <div className="grid md:grid-cols-3 gap-4 mt-4">
+        <Card title="Yüksek yoğunluklu statin (≥ %50 ↓)">Atorvastatin 40-80 mg · Rosuvastatin 20-40 mg</Card>
+        <Card title="Orta yoğunluklu statin (%30-49 ↓)">Atorvastatin 10-20 mg · Rosuvastatin 5-10 mg · Simvastatin 20-40 mg</Card>
+        <Card title="İzlem ve intolerans">4-12 haftada lipid kontrolü. Kas yakınmasında ara ver, statin değiştir veya gün aşırı dozla. ALT &gt; 3× ÜSN kalıcıysa azalt/kes. Gebelikte kesilir.</Card>
+      </div>
+    </div>
+
+    <div>
+      <SectionTitle icon={<Gauge size={20} />} sub="THU 2025 ile uyumlu hedefler ve basamaklar.">Hipertansiyon</SectionTitle>
+      <DataTable
+        head={['Hasta grubu', 'KB hedefi', 'Not']}
+        rows={[
+          ['Çoğu erişkin diyabetli', '< 130/80 mmHg', 'Albüminüri / KBH / KAH varsa ACE-İ veya ARB'],
+          ['Yaşlı / kırılgan', '< 140/90 mmHg (bireysel)', 'Ortostatik hipotansiyon ve düşme izlenir'],
+          ['Gebelik', '110-135 / 80-85 mmHg', 'Metildopa, labetalol, uzun etkili nifedipin; ACE-İ/ARB/spironolakton kontrendike'],
+        ]}
+      />
+      <div className="grid sm:grid-cols-3 gap-3 mt-4">
+        <Card title="1. KB ≥ 130/80">Yaşam tarzı + ilaç tedavisi başlanır.</Card>
+        <Card title="2. KB ≥ 150/90">Başlangıçta ikili tek tablet: ACE-İ/ARB + KKB veya tiyazid.</Card>
+        <Card title="3. Dirençli HT">3 ilaca rağmen yüksekse 4. ajan spironolakton; K⁺ ve eGFR izlenir.</Card>
+      </div>
+    </div>
+
+    <div className="grid md:grid-cols-2 gap-4">
+      <Card title="Antiagregan" tone="sky">
+        <Bullets items={[
+          <><strong>Sekonder koruma:</strong> ASKVH olan tüm diyabetlilerde aspirin 75-100 mg/gün; intoleransta klopidogrel 75 mg.</>,
+          <><strong>Primer koruma:</strong> ≥ 50 yaş, yüksek KV riskli ve kanama riski düşük seçilmiş hastalarda düşünülebilir.</>,
+          'Yüksek GİS veya intrakraniyal kanama riskinde kaçınılır.',
+        ]} />
+      </Card>
+      <Card title="Trigliserid" tone="sky">
+        <Bullets items={[
+          'Hedef açlık TG < 150 mg/dL.',
+          <><strong>&gt; 500-1000 mg/dL:</strong> pankreatit riski; öncelikli tedavi (glisemik kontrol + fibrat veya omega-3/ikosapent etil).</>,
+          'Sekonder nedenler: kontrolsüz diyabet, alkol, hipotiroidi, östrojen, tiyazid/beta-bloker.',
+        ]} />
+      </Card>
+      <Card title="Kalp yetersizliği" tone="plain">
+        <Bullets items={[
+          <><strong>HFrEF:</strong> SGLT2-İ + ARNI/ACE-İ/ARB + beta-bloker + MRA.</>,
+          <><strong>HFpEF:</strong> SGLT2-İ; obezitede GLP-1 RA veya tirzepatid.</>,
+          'Pioglitazon ve saksagliptinden kaçınılır.',
+        ]} />
+      </Card>
+      <Card title="Sessiz iskemi ve periferik arter" tone="plain">
+        <Bullets items={[
+          'Otonom nöropatide göğüs ağrısı olmayabilir; efor dispnesi ve yorgunluk anjina eşdeğeri olabilir.',
+          'Yürürken bacak ağrısı (kladikasyo) sorgulanır; ayak nabızları her yıl palpe edilir.',
+          <span className="flex gap-1"><Pill size={14} className="mt-0.5 shrink-0" />Tütün bırakma her vizitte önerilir; en etkili KV koruma.</span>,
+        ]} />
+      </Card>
+    </div>
+  </div>
+);
+
+export default Cardiovascular;

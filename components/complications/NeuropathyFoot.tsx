@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Footprints, Hand, Siren, Flame, ShieldCheck, RotateCcw } from 'lucide-react';
-import { SectionTitle, DataTable, Card, Bullets } from './ui';
+import { SectionTitle, DataTable, Card, Bullets } from '../shared/ui';
 
 const toes = [
   { id: 'r1', side: 'Sağ', toe: '1. parmak' },

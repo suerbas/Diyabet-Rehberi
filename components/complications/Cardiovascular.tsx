@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { HeartPulse, Gauge, Pill, Check } from 'lucide-react';
-import { SectionTitle, DataTable, Card, Bullets, NumField, parseNum } from './ui';
+import { SectionTitle, DataTable, Card, Bullets, NumField, parseNum } from '../shared/ui';
 
 type Risk = 'cokYuksek' | 'yuksek' | 'orta';
 

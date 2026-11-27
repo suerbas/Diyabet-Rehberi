@@ -1,6 +1,6 @@
 import React from 'react';
 import { Droplets, Eye, AlertTriangle, Send } from 'lucide-react';
-import { SectionTitle, DataTable, Card, Bullets } from './ui';
+import { SectionTitle, DataTable, Card, Bullets } from '../shared/ui';
 
 const pillars = [
   { n: 1, title: 'RAS blokajı', text: 'Maksimum tolere dozda ACE-İ veya ARB (ikisi birlikte verilmez).' },

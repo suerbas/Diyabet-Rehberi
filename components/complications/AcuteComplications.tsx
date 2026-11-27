@@ -1,6 +1,6 @@
 import React from 'react';
 import { Candy, Timer, Car, Siren, Thermometer, AlertTriangle } from 'lucide-react';
-import { SectionTitle, DataTable, Card, Bullets } from './ui';
+import { SectionTitle, DataTable, Card, Bullets } from '../shared/ui';
 
 const levels = [
   { level: 'Düzey 1', range: '54-69 mg/dL', tone: 'bg-amber-50 border-amber-200', head: 'text-amber-800', text: 'Uyarı eşiği. Hızlı etkili karbonhidrat ile hasta kendisi tedavi eder.' },

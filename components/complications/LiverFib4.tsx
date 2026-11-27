@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FlaskConical, Calculator } from 'lucide-react';
-import { SectionTitle, DataTable, Card, Bullets, NumField, parseNum } from './ui';
+import { SectionTitle, DataTable, Card, Bullets, NumField, parseNum } from '../shared/ui';
 
 const LiverFib4: React.FC = () => {
   const [age, setAge] = useState('');

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ClipboardCheck, Eye, Droplets, Footprints, HeartPulse, Syringe, Brain } from 'lucide-react';
-import { SectionTitle, DataTable, Card } from './ui';
+import { SectionTitle, DataTable, Card } from '../shared/ui';
 
 const visitChecklist = [
   { icon: <HeartPulse size={18} />, title: 'Glisemi ve hipoglisemi', text: 'HbA1c, ev ölçümleri, son 3 aydaki hipoglisemiler, araç kullanım güvenliği.' },

@@ -13,9 +13,9 @@ const Footer: React.FC = () => {
           Bu içerik T.C. Sağlık Bakanlığı, TEMD 2026 Kılavuzu, ADA Standartları ve IDF Diabetes Atlas verileri kaynak alınarak sağlık profesyonelleri ve hastalar için bilgilendirme amaçlı hazırlanmıştır. Tanı ve tedavi için mutlaka hekiminize başvurunuz.
         </p>
         <div className="flex justify-center gap-6 text-sm font-medium">
-          <a href="#" className="hover:text-white transition-colors">TEMD Kılavuzu</a>
-          <a href="#" className="hover:text-white transition-colors">ADA Standartları</a>
-          <a href="#" className="hover:text-white transition-colors">Sağlık Bakanlığı</a>
+          <a href="https://temd.org.tr/yayinlar/kilavuzlar" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">TEMD Kılavuzu</a>
+          <a href="https://professional.diabetes.org/standards-of-care" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">ADA Standartları</a>
+          <a href="https://hsgm.saglik.gov.tr/tr/diyabet.html" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Sağlık Bakanlığı</a>
         </div>
         <div className="mt-8 text-xs text-slate-600">
           &copy; 2026 Tüm hakları saklıdır.

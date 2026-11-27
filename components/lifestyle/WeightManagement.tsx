@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Scale, Pill, Scissors, Target } from 'lucide-react';
-import { SectionTitle, DataTable, Card, Bullets, NumField, parseNum } from './ui';
+import { SectionTitle, DataTable, Card, Bullets, NumField, parseNum } from '../shared/ui';
 
 const fmt = (n: number, d = 1) => n.toFixed(d).replace('.', ',');
 

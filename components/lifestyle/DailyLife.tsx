@@ -1,6 +1,6 @@
 import React from 'react';
 import { Ban, Moon, Car, GraduationCap, Smile } from 'lucide-react';
-import { SectionTitle, Card, Bullets } from './ui';
+import { SectionTitle, Card, Bullets } from '../shared/ui';
 
 const DailyLife: React.FC = () => (
   <div className="max-w-5xl mx-auto space-y-10">

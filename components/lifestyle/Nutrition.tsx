@@ -1,6 +1,6 @@
 import React from 'react';
 import { Utensils, Hand, Wine, Fish } from 'lucide-react';
-import { SectionTitle, DataTable, Card, Bullets } from './ui';
+import { SectionTitle, DataTable, Card, Bullets } from '../shared/ui';
 
 const Nutrition: React.FC = () => (
   <div className="max-w-5xl mx-auto space-y-10">

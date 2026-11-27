@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Activity, HeartPulse, ShieldAlert, Check } from 'lucide-react';
-import { SectionTitle, Card, Bullets, NumField, parseNum } from './ui';
+import { SectionTitle, Card, Bullets, NumField, parseNum } from '../shared/ui';
 
 type Ketone = 'bilinmiyor' | 'negatif' | 'pozitif';
 type Advice = { title: string; text: string[]; tone: string };

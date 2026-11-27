@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# TEMD kılavuz PDF (yerel kaynak, depoya eklenmez)
+diabetesmellitus2026.pdf

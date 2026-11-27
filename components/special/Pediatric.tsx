@@ -10,12 +10,13 @@ const Pediatric: React.FC = () => (
       </p>
     </Card>
 
-    <div className="grid md:grid-cols-2 gap-4">
-      <div>
+    {/* Two columns built the same way (title + subtitle, body, footnote) so the frames line up */}
+    <div className="grid md:grid-cols-2 gap-x-6 gap-y-10">
+      <div className="flex flex-col">
         <SectionTitle sub="Çoğu çocuk ve genç için.">Glisemik hedefler</SectionTitle>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3 flex-1">
           {[['HbA1c', '< %7,0'], ['Açlık / öğün öncesi', '70-130 mg/dL'], ['CGM TIR (70-180)', '> %70'], ['TBR (< 70)', '< %4']].map(([l, v]) => (
-            <div key={l} className="bg-white border border-slate-200 rounded-xl p-4 text-center shadow-sm">
+            <div key={l} className="bg-white border border-slate-200 rounded-xl p-4 text-center shadow-sm flex flex-col justify-center">
               <div className="text-xs text-slate-500">{l}</div>
               <div className="text-xl font-bold text-slate-900 mt-1">{v}</div>
             </div>
@@ -23,15 +24,16 @@ const Pediatric: React.FC = () => (
         </div>
         <p className="text-xs text-slate-500 mt-2">Küçük çocuklarda ve hipoglisemi farkındalığı azalmışsa hedefler esnetilir.</p>
       </div>
-      <div>
-        <SectionTitle icon={<Search size={20} />}>Tip 2 diyabet taraması</SectionTitle>
-        <Card tone="sky">
+      <div className="flex flex-col">
+        <SectionTitle icon={<Search size={20} />} sub="Asemptomatik, risk taşıyan çocuk ve ergenler.">Tip 2 diyabet taraması</SectionTitle>
+        <Card tone="sky" className="flex-1 flex flex-col justify-center">
           <Bullets items={[
             <><strong>Kimler:</strong> BKİ &gt; 85. persentil ve ≥ 1 ek risk faktörü (ailede T2DM, GDM’li anne, akantozis nigrikans, PKOS, HT, dislipidemi)</>,
             <><strong>Ne zaman:</strong> 10 yaşında veya puberte başladıysa daha erken</>,
             <><strong>Sıklık:</strong> 2 yılda bir (APG, HbA1c veya OGTT)</>,
           ]} />
         </Card>
+        <p className="text-xs text-slate-500 mt-2">Sonuç prediyabet veya diyabet aralığındaysa çocuk endokrinolojisine yönlendirilir.</p>
       </div>
     </div>
 

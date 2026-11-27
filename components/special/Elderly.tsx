@@ -3,9 +3,9 @@ import { UserCheck, Check, ShieldAlert, ListChecks } from 'lucide-react';
 import { SectionTitle, DataTable, Card, Bullets } from '../shared/ui';
 
 const profiles = [
-  { id: 'saglikli', label: 'Sağlıklı yaşlı', desc: 'Az sayıda kronik hastalık, bilişsel ve işlevsel durum korunmuş; yaşam beklentisi > 15 yıl', a1c: '< %7,0-7,5', fpg: '80-130', ppg: '< 160-180', bp: '< 130/80', tone: 'border-emerald-300 bg-emerald-50 text-emerald-900' },
-  { id: 'orta', label: 'Orta düzey kırılgan', desc: '≥ 3 kronik hastalık, ≥ 2 enstrümantal günlük yaşam aktivitesinde kısıtlılık veya hafif-orta bilişsel bozukluk', a1c: '< %8,0', fpg: '90-150', ppg: '< 180', bp: '< 140/90', tone: 'border-amber-300 bg-amber-50 text-amber-900' },
-  { id: 'ileri', label: 'İleri kırılgan / bakıma muhtaç', desc: 'Bakımevi, son dönem kronik hastalık, orta-ağır bilişsel bozukluk veya ≥ 2 temel günlük yaşam aktivitesinde bağımlılık', a1c: '< %8,5 (semptom önleme)', fpg: '100-180', ppg: '< 200', bp: '< 140/90', tone: 'border-rose-300 bg-rose-50 text-rose-900' },
+  { id: 'saglikli', label: 'Sağlıklı yaşlı', desc: 'Az sayıda kronik hastalık, bilişsel ve işlevsel durum korunmuş; yaşam beklentisi > 15 yıl', a1c: '< %7,0-7,5', fpg: '80-130', ppg: '< 160-180', bp: '120-130/70-80 (≥ 80 yaş: sistolik 130-140)', tone: 'border-emerald-300 bg-emerald-50 text-emerald-900' },
+  { id: 'orta', label: 'Orta düzey kırılgan', desc: '≥ 3 kronik hastalık, ≥ 2 enstrümantal günlük yaşam aktivitesinde kısıtlılık veya hafif-orta bilişsel bozukluk', a1c: '< %7,5-8,0', fpg: '90-150', ppg: '< 180', bp: 'Sistolik 130-140', tone: 'border-amber-300 bg-amber-50 text-amber-900' },
+  { id: 'ileri', label: 'İleri kırılgan / bakıma muhtaç', desc: 'Bakımevi, son dönem kronik hastalık, orta-ağır bilişsel bozukluk veya ≥ 2 temel günlük yaşam aktivitesinde bağımlılık', a1c: '< %8,0-8,5 (semptom önleme)', fpg: '100-180', ppg: '< 200', bp: 'Sistolik 140-150', tone: 'border-rose-300 bg-rose-50 text-rose-900' },
 ] as const;
 
 const midItems = [

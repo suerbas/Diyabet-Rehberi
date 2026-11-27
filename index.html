@@ -4,8 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Diyabet Rehberi – TEMD 2026</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="author" content="Dr. Suat ERBAŞ" />
+    <meta name="copyright" content="© 2026 Dr. Suat ERBAŞ" />
+    <meta name="description" content="Birinci basamak hekimleri için TEMD 2026 tabanlı Tip 2 diyabet tanı, tedavi ve komplikasyon rehberi." />
+    <meta name="theme-color" content="#ffe500" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         theme: {
@@ -14,7 +19,7 @@
               sans: ['Inter', 'sans-serif'],
             },
             colors: {
-              primary: '#0ea5e9',
+              primary: '#0a0a0a',
               secondary: '#3b82f6',
               accent: '#f43f5e',
               dark: '#0f172a',
@@ -33,24 +38,95 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
       }
+
+      /* ===== Brutalism ===== */
+      :root { --bg:#f2efe6; --ink:#0a0a0a; --card:#ffffff; --yellow:#ffe500; --red:#ff5a47; --green:#4ade80; --border:3px solid var(--ink); --shadow:5px 5px 0 var(--ink); --mono:'Space Mono',ui-monospace,monospace; }
+      body { background:var(--bg) !important; color:var(--ink); font-family:'Inter',sans-serif; font-weight:400; }
+      #root > div, .bg-slate-50, .min-h-screen { background-color:var(--bg) !important; }
+      [class*="rounded"] { border-radius:0 !important; }
+      [class*="shadow"] { box-shadow:var(--shadow) !important; }
+      .shadow-none { box-shadow:none !important; }
+      [class*="blur"] { backdrop-filter:none !important; filter:none !important; }
+      [class*="bg-white/"] { background-color:var(--card) !important; }
+      [class*="bg-gradient"] { background-image:none !important; background-color:var(--ink) !important; }
+      [class*="rounded"][class~="border"], [class*="rounded"][class*="border-"]:not([class*="border-t"]):not([class*="border-b"]):not([class*="border-l"]):not([class*="border-r"]) { border:var(--border) !important; }
+      .bg-white[class*="rounded"] { background:var(--card); }
+      h1, h2 { font-weight:900 !important; text-transform:uppercase; letter-spacing:-0.01em; color:var(--ink); }
+      section h3, .text-xl, .text-2xl { font-weight:900; }
+      h3 { text-transform:uppercase; }
+      table h3, label, td, th, input, select, textarea, p { text-transform:none; }
+      .uppercase.tracking-wider, .uppercase.tracking-wide, [role="tab"], nav a, nav button, button, label { font-family:var(--mono) !important; }
+      /* quiz options and long answer buttons stay readable */
+      button.text-left, button.w-full.text-left { font-family:'Inter',sans-serif !important; }
+      .bg-primary, .bg-indigo-600, .bg-sky-500, .bg-sky-600, .bg-blue-600 { background-color:var(--yellow) !important; color:var(--ink) !important; }
+      .bg-primary *, .bg-indigo-600 * { color:var(--ink) !important; }
+      .bg-indigo-500, .bg-indigo-400 { background-color:var(--red) !important; }
+      .bg-sky-100, .bg-indigo-100 { background-color:var(--yellow) !important; color:var(--ink) !important; }
+      .text-indigo-600, .text-indigo-700, .text-sky-600, .text-sky-700, .text-primary { color:var(--ink) !important; }
+      .text-slate-400, .text-slate-500 { color:#4a4a4a !important; }
+      .bg-slate-900 .text-slate-400, .bg-slate-900 .text-slate-500, .bg-slate-800 .text-slate-400, .bg-slate-800 .text-slate-500, [class*="bg-gradient"] .text-slate-400 { color:#d4d4d4 !important; }
+      .bg-slate-900, .bg-slate-800 { background-color:var(--ink) !important; }
+      /* light/bright fills get black text for 4.5:1 contrast */
+      [class*="bg-white/"] { color:var(--ink) !important; }
+      .text-white:is(.bg-amber-400,.bg-amber-500,.bg-orange-400,.bg-orange-500,.bg-yellow-400,.bg-yellow-500,.bg-green-500,.bg-emerald-500,.bg-lime-500) { color:var(--ink) !important; }
+      .bg-emerald-600 { background-color:#047857 !important; }
+      /* dark areas keep light text */
+      :is(.bg-slate-900,.bg-slate-800,[class*="bg-gradient"]):is(.text-slate-400,.text-slate-500,.text-slate-600),
+      :is(.bg-slate-900,.bg-slate-800,[class*="bg-gradient"]) :is(.text-slate-400,.text-slate-500,.text-slate-600) { color:#d4d4d4 !important; }
+      :is(.bg-slate-900,.bg-slate-800,[class*="bg-gradient"]) .text-primary { color:var(--yellow) !important; }
+      :is(.bg-slate-900,.bg-slate-800,[class*="bg-gradient"]) [class*="bg-white/"] { color:#fff !important; background-color:#262626 !important; border:2px solid #fff !important; box-shadow:none !important; }
+      button, [role="tab"], a[class*="px-"] { min-height:44px; }
+      button[class*="shadow"]:active, a[class*="shadow"]:active { transform:translate(5px,5px); box-shadow:none !important; }
+      button { transition:transform .05s; }
+      footer a, nav a { display:inline-flex; align-items:center; min-height:44px; }
+      input, select, textarea { border:var(--border) !important; border-radius:0 !important; background:var(--card); min-height:44px; }
+      table { border-collapse:collapse; }
+      th, td { border-color:var(--ink) !important; }
+      thead, thead tr { background:var(--yellow) !important; color:var(--ink); }
+      :focus-visible { outline:3px solid var(--ink) !important; outline-offset:2px; box-shadow:0 0 0 6px var(--yellow) !important; }
+      ::selection { background:var(--yellow); color:var(--ink); }
+      /* ===== Editorial details & motion ===== */
+      .num-outline { color:transparent; -webkit-text-stroke:2px var(--ink); letter-spacing:-0.04em; }
+      .hl { box-shadow:inset 0 -0.36em 0 var(--yellow); padding:0 .08em; box-decoration-break:clone; -webkit-box-decoration-break:clone; }
+      .logo-sub { font-family:var(--mono); font-weight:700; }
+      .tabbar { background:var(--bg); }
+      .tab-btn + .tab-btn { border-left:2px solid var(--ink); }
+      @media (max-width:767px) {
+        .tab-btn + .tab-btn { border-left:0; }
+        .tab-btn:nth-child(even) { border-left:2px solid var(--ink); }
+        .tab-btn:nth-child(n+3) { border-top:2px solid var(--ink); }
+      }
+      a.section-card, button[class*="shadow"], a[class*="shadow"] { transition:transform .15s ease, box-shadow .15s ease; }
+      @media (hover:hover) {
+        a.section-card:hover, button[class*="shadow"]:not(:disabled):hover { transform:translate(-2px,-2px); box-shadow:7px 7px 0 var(--ink) !important; }
+      }
+      button[class*="shadow"]:active, a.section-card:active { transform:translate(5px,5px) !important; box-shadow:none !important; }
+      .ticker-track { animation:ticker 38s linear infinite; }
+      .ticker:hover .ticker-track { animation-play-state:paused; }
+      @keyframes ticker { to { transform:translateX(-50%); } }
+      .hero-hex { animation:spin 120s linear infinite; opacity:.5; }
+      @keyframes spin { to { transform:rotate(360deg); } }
+      .logo-hex { stroke-dasharray:70; stroke-dashoffset:70; animation:draw .9s .15s cubic-bezier(.6,0,.2,1) forwards; }
+      @keyframes draw { to { stroke-dashoffset:0; } }
+      .logo-ring { transform-origin:20px 20px; transition:transform .5s cubic-bezier(.6,0,.2,1); }
+      a:hover .logo-ring { transform:rotate(60deg); }
+      .menu-drop { animation:drop .18s ease-out; }
+      @keyframes drop { from { transform:translateY(-8px); opacity:0; } }
+      .reveal { opacity:0; transform:translateY(18px); transition:opacity .5s ease, transform .55s cubic-bezier(.2,.7,.2,1); }
+      .reveal.in { opacity:1; transform:none; }
+      .search-input { border:0 !important; min-height:0 !important; background:transparent !important; }
+      .search-input:focus-visible { outline:none !important; box-shadow:none !important; }
+      .search-panel { animation:drop .16s ease-out; }
+      .search-hit { animation:hit 2.6s ease-out; }
+      @keyframes hit { 0%, 35% { outline:4px solid var(--red); outline-offset:6px; } 100% { outline:4px solid transparent; outline-offset:6px; } }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; }
+        .logo-hex { stroke-dashoffset:0; }
+        .reveal { opacity:1; transform:none; }
+      }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom": "https://aistudiocdn.com/react-dom@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
-    "recharts": "https://aistudiocdn.com/recharts@^3.4.1",
-    "react-router-dom": "https://esm.sh/react-router-dom@6.22.3?external=react,react-dom",
-    "react-router": "https://esm.sh/react-router@6.22.3?external=react,react-dom",
-    "@remix-run/router": "https://esm.sh/@remix-run/router@1.15.3"
-  }
-}
-</script>
 </head>
-  <body class="bg-slate-50 text-slate-800">
+  <body>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>

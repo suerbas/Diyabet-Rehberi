@@ -27,7 +27,7 @@ function interpret(v: {
   const hits: string[] = [];
   if (apg !== null && apg >= 126) hits.push(`APG ${apg} ≥ 126`);
   if (ogtt2 !== null && ogtt2 >= 200) hits.push(`OGTT 2. saat ${ogtt2} ≥ 200`);
-  if (ogtt1 !== null && ogtt1 >= 209) hits.push(`OGTT 1. saat ${ogtt1} ≥ 209`);
+  if (ogtt1 !== null && ogtt1 >= 209) hits.push(`OGTT 1. saat ${ogtt1} ≥ 209 (IDF 2024)`);
   if (a1c !== null && a1c >= 6.5) hits.push(`HbA1c %${String(a1c).replace('.', ',')} ≥ %6,5`);
 
   if (hits.length >= 2) {
@@ -40,7 +40,11 @@ function interpret(v: {
   if (hits.length === 1) {
     return {
       title: 'Diyabet ile uyumlu — doğrulama gerekli',
-      detail: [`${hits[0]}. Semptom yoksa tanı, ayrı bir günde aynı testin tekrarı (veya aynı örnekte ikinci bir test) ile doğrulanmalıdır.`, ...notes],
+      detail: [
+        `${hits[0]}. Semptom yoksa tanı, ayrı bir günde aynı testin tekrarı (veya aynı örnekte ikinci bir test) ile doğrulanmalıdır.`,
+        ...(ogtt1 !== null && ogtt1 >= 209 ? ['TEMD 2026, 1. saat ölçütünü IDF 2024 görüşü olarak aktarır; ülkemizde net öneri için çok merkezli çalışmalara ihtiyaç olduğunu belirtir (D). Doğrulamayı APG, 2. saat PG veya HbA1c ile yapın.'] : []),
+        ...notes,
+      ],
       tone: 'border-orange-300 bg-orange-50 text-orange-900',
     };
   }
@@ -134,13 +138,13 @@ const Interpreter: React.FC = () => {
 const DiagnosticCriteria: React.FC = () => (
   <div className="max-w-5xl mx-auto space-y-10">
     <div>
-      <SectionTitle sub="TEMD 2026: 75 g OGTT 1. saat plazma glukozu tanı ölçütlerine eklendi (IDF 2024).">Tanı ölçütleri</SectionTitle>
+      <SectionTitle sub="TEMD 2026 Tablo 1.1. 75 g OGTT 1. saat eşikleri IDF 2024 görüşüdür; TEMD ülkemiz için net öneri öncesi çok merkezli çalışma gerektiğini belirtir.">Tanı ölçütleri</SectionTitle>
       <DataTable
         head={['Ölçüm', 'Diyabet', 'İzole BAG', 'İzole BGT', 'Yüksek risk']}
         rows={[
           ['APG (≥ 8 saat açlık)', '≥ 126 mg/dL', '100-125 mg/dL', '< 100 mg/dL', '—'],
           ['75 g OGTT 2. saat', '≥ 200 mg/dL', '< 140 mg/dL', '140-199 mg/dL', '—'],
-          [<span key="o1">75 g OGTT 1. saat <span className="ml-1 text-[10px] font-bold uppercase bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded">Yeni</span></span>, '≥ 209 mg/dL', '—', '—', '≥ 155 mg/dL (ara hiperglisemi)'],
+          [<span key="o1">75 g OGTT 1. saat <span className="ml-1 text-[10px] font-bold uppercase bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded">IDF 2024</span></span>, '≥ 209 mg/dL', '—', '—', '≥ 155 mg/dL (ara hiperglisemi)'],
           ['Rastgele PG + semptom', '≥ 200 mg/dL', '—', '—', '—'],
           ['HbA1c (standardize)', '≥ %6,5 (48 mmol/mol)', '—', '—', '%5,7-6,4 (39-47 mmol/mol)'],
         ]}

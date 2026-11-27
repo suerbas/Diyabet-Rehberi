@@ -2,6 +2,9 @@
 // inside that tab (?odak=) that is scrolled to and highlighted. Keywords cover the words a
 // primary-care physician is likely to type: synonyms, lay terms, drug and brand names.
 
+import { drugGroups } from '../treatment/drugListMeta';
+import { titckBrands } from '../treatment/drugListBrands';
+
 export interface SearchEntry {
   title: string;
   section: string;   // page name shown in the breadcrumb
@@ -164,11 +167,27 @@ export const searchIndex: SearchEntry[] = [
     keywords: ['prevalans', 'sıklık', 'TURDEP', 'IDF', 'istatistik', 'kaç kişi', 'Türkiye'] },
 ];
 
+// İlaç Listesi tab: one overview entry, then one entry per active substance whose keywords are
+// its Turkish brand names from the TİTCK list, so typing a brand lands on the right card.
+const L = { ...T, tab: 'liste', tabLabel: 'İlaç Listesi' };
+const drugListEntries: SearchEntry[] = [
+  { ...L, title: 'Türkiye’de ruhsatlı antidiyabetikler (TİTCK)',
+    keywords: ['ilaç listesi', 'ticari ad', 'marka', 'TİTCK', 'ruhsatlı', 'eşdeğer', 'muadil', 'jenerik', 'kutu', 'piyasa'] },
+  ...drugGroups.flatMap(g => g.items
+    .filter(m => titckBrands[m.key])
+    .map(m => ({
+      ...L,
+      focus: m.label,
+      title: `${m.label}: ticari adlar ve doz`,
+      keywords: [m.label, ...titckBrands[m.key].brands.map(b => b.n)],
+    }))),
+];
+
 // Turkish-aware folding: case, dotted/dotless i and diacritics are ignored ("insulin" finds "İnsülin")
 export const fold = (s: string) =>
   s.toLocaleLowerCase('tr').replace(/ı/g, 'i').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[’'`]/g, '');
 
-const prepared = searchIndex.map(e => ({
+const prepared = [...searchIndex, ...drugListEntries].map(e => ({
   e,
   title: fold(e.title),
   crumbs: fold(`${e.section} ${e.tabLabel ?? ''}`),

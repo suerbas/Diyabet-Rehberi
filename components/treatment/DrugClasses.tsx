@@ -76,7 +76,7 @@ const drugData: DrugClass[] = [
     renal: 'eGFR ≥ 15’te doz ayarı gerekmez · < 15’te mümkünse kullanılmaz',
     agents: [
       { name: 'Semaglutid SC', brands: 'Ozempic', dose: 'Haftada 1: 0,25 mg ile başla → idame 0,5-1 mg' },
-      { name: 'Semaglutid oral', brands: 'Rybelsus (TEMD 2026: ülkemizde yok)', dose: 'Sabah aç karnına az su ile: 3 mg, 1 ay sonra 7 mg, gerekirse 14 mg' },
+      { name: 'Semaglutid oral', brands: 'Rybelsus', dose: 'Sabah aç karnına az su ile: 3 mg, 1 ay sonra 7 mg, gerekirse 14 mg' },
       { name: 'Dulaglutid', brands: 'Trulicity', dose: 'Haftada 1: 0,75 → 1,5 mg' },
       { name: 'Liraglutid', brands: 'Victoza', dose: 'Günde 1: 0,6 mg ile başla → idame 1,2-1,8 mg' },
     ],

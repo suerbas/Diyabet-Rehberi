@@ -1,15 +1,17 @@
 import { PageHeader, TabBar, useTabParam } from './shared/ui';
 import React, { useState } from 'react';
-import { Route as RouteIcon, Pill, Droplets, Syringe, Info } from 'lucide-react';
+import { Route as RouteIcon, Pill, Droplets, Syringe, Info, ListChecks } from 'lucide-react';
 import TherapySelector from './treatment/TherapySelector';
 import DrugClasses from './treatment/DrugClasses';
 import RenalDoseCheck from './treatment/RenalDoseCheck';
 import InsulinModule from './treatment/InsulinModule';
+import DrugList from './treatment/DrugList';
 
 const tabs = [
   { id: 'secici', label: 'Tedavi Seçici', icon: <RouteIcon size={18} />, intro: 'Komorbiditeleri işaretleyin; organ koruyucu yaklaşıma göre öncelikli ilaç sınıfları ve kaçınılması gerekenler gerekçeleriyle listelenir.' },
   { id: 'ilaclar', label: 'İlaç Sınıfları', icon: <Pill size={18} />, intro: 'Her sınıfın HbA1c etkisi, hipoglisemi ve kilo profili, böbrek sınırı, kontrendikasyonları ve 2026 güvenlik notları.' },
   { id: 'egfr', label: 'eGFR & Doz', icon: <Droplets size={18} />, intro: 'eGFR’yi seçin; her antidiyabetik için kullanım durumu ve doz ayarı anında güncellenir.' },
+  { id: 'liste', label: 'İlaç Listesi', icon: <ListChecks size={18} />, intro: 'Türkiye’de ruhsatlı tüm antidiyabetikler (TİTCK): etken madde, ticari adlar ve güçler; TEMD 2026’ya göre doz, böbrek sınırı ve kısa not.' },
   { id: 'insulin', label: 'İnsülin', icon: <Syringe size={18} />, intro: 'Başlama ve yoğunlaştırma basamakları, bazal titrasyon ve bolus hesaplayıcıları, preparatlar ve enjeksiyon tekniği.' },
 ] as const;
 
@@ -35,6 +37,7 @@ const Treatment: React.FC = () => {
           {active === 'secici' && <TherapySelector />}
           {active === 'ilaclar' && <DrugClasses />}
           {active === 'egfr' && <RenalDoseCheck />}
+          {active === 'liste' && <DrugList />}
           {active === 'insulin' && <InsulinModule />}
         </div>
 

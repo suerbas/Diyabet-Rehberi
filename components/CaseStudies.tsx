@@ -303,7 +303,9 @@ const CaseStudies: React.FC = () => {
             className={`justify-self-end flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-bold transition-colors ${answered ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-200' : 'text-indigo-700 border border-indigo-200 hover:bg-indigo-50'}`}>
             {isLast
               ? <><span>Sonuçlar</span> <Trophy size={18} /></>
-              : <><span>{answered ? 'Sonraki' : 'Atla'}<span className="hidden sm:inline"> soru</span></span> <ArrowRight size={18} /></>}
+              : answered
+                ? <><span>Sonraki<span className="hidden sm:inline"> soru</span></span> <ArrowRight size={18} /></>
+                : <><span className="sm:hidden">Atla</span><span className="hidden sm:inline">Soruyu atla</span> <ArrowRight size={18} /></>}
           </button>
         </nav>
       </div>

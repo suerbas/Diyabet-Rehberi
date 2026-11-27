@@ -13,74 +13,84 @@ const rows: Row[] = [
   {
     drug: 'Metformin', group: 'Oral',
     eval: e => e >= 45 ? { status: 'ok', text: 'Tam doz; eGFR 45-59 ise 3-6 ayda bir eGFR izle.' }
-      : e >= 30 ? { status: 'dikkat', text: 'Yeni başlanmaz; kullanıyorsa maks. 1000 mg/gün.' }
+      : e >= 30 ? { status: 'dikkat', text: 'Yeni başlanmaz; kullanıyorsa doz %50 azaltılır (maks. 1000 mg/gün).' }
       : { status: 'hayir', text: 'Kontrendike, kesilir.' },
   },
   {
     drug: 'SGLT2-İ (dapa/empagliflozin)', group: 'Oral',
-    eval: e => e >= 45 ? { status: 'ok', text: 'Tam doz; glisemik etki ve organ koruma.' }
-      : e >= 20 ? { status: 'dikkat', text: 'Organ koruma için başlanır/sürdürülür; glisemik etki zayıf, ek ajan gerekebilir.' }
-      : { status: 'dikkat', text: 'Yeni başlanmaz; kullanıyorsa diyalize dek sürdürülebilir, diyalizde kesilir.' },
+    eval: e => e >= 60 ? { status: 'ok', text: 'Tam doz; glisemik etki ve organ koruma.' }
+      : e >= 45 ? { status: 'ok', text: 'Organ koruma için uygun. Empagliflozin yalnızca glisemik amaçla yeni başlanmaz; kullanıyorsa 10 mg ile sürer.' }
+      : e >= 25 ? { status: 'dikkat', text: 'KBH/KY endikasyonuyla başlanır veya sürdürülür; glisemik etki zayıf, ek ajan gerekebilir.' }
+      : e >= 20 ? { status: 'dikkat', text: 'Dapagliflozin yeni başlanmaz; empagliflozin organ koruma için başlanabilir. Glisemik etki zayıf.' }
+      : e >= 15 ? { status: 'dikkat', text: 'Yeni başlanmaz; kullanıyorsa nefroloji ile birlikte karar.' }
+      : { status: 'hayir', text: 'TEMD: eGFR < 15 veya diyalizde insülin dışı ilaç önerilmez.' },
   },
   {
     drug: 'GLP-1 RA', group: 'Enjektabl',
-    eval: e => e >= 15 ? { status: 'ok', text: 'Doz ayarı gerekmez. Kusma/dehidratasyonda AKI riskine dikkat.' }
-      : { status: 'dikkat', text: 'Son dönemde deneyim sınırlı; nefroloji ile birlikte karar.' },
+    eval: e => e >= 15 ? { status: 'ok', text: 'Liraglutid, dulaglutid, semaglutid doz ayarsız. Kusma/dehidratasyonda AKI riskine dikkat.' }
+      : { status: 'hayir', text: 'Mümkünse kullanılmaz; TEMD eGFR < 15’te yalnızca insülin önerir.' },
   },
   {
     drug: 'Tirzepatid', group: 'Enjektabl',
     eval: e => e >= 15 ? { status: 'ok', text: 'Doz ayarı gerekmez; dehidratasyondan kaçın.' }
-      : { status: 'dikkat', text: 'Son dönemde deneyim sınırlı.' },
+      : { status: 'hayir', text: 'Mümkünse kullanılmaz; TEMD eGFR < 15’te yalnızca insülin önerir.' },
   },
   {
     drug: 'Sitagliptin', group: 'Oral',
     eval: e => e >= 45 ? { status: 'ok', text: '100 mg/gün.' }
       : e >= 30 ? { status: 'dikkat', text: '50 mg/gün.' }
-      : { status: 'dikkat', text: '25 mg/gün.' },
+      : e >= 15 ? { status: 'dikkat', text: 'Mümkünse kullanılmaz; gerekirse 25 mg/gün.' }
+      : { status: 'hayir', text: 'TEMD: eGFR < 15’te yalnızca insülin.' },
   },
   {
     drug: 'Vildagliptin', group: 'Oral',
     eval: e => e >= 50 ? { status: 'ok', text: '2x50 mg/gün.' }
-      : { status: 'dikkat', text: '1x50 mg/gün.' },
+      : e >= 15 ? { status: 'dikkat', text: '1x50 mg/gün.' }
+      : { status: 'hayir', text: 'Tercihen kullanılmaz; TEMD eGFR < 15’te yalnızca insülin önerir.' },
   },
   {
     drug: 'Linagliptin', group: 'Oral',
-    eval: () => ({ status: 'ok', text: '5 mg/gün; tüm eGFR düzeylerinde doz ayarsız.' }),
+    eval: e => e >= 15 ? { status: 'ok', text: '5 mg/gün; doz ayarı gerekmez.' }
+      : { status: 'dikkat', text: 'Doz ayarsız kullanılabildiği gösterilmiştir; ancak TEMD eGFR < 15’te yalnızca insülin önerir.' },
   },
   {
     drug: 'Gliklazid MR', group: 'Oral',
     eval: e => e >= 60 ? { status: 'ok', text: 'Kullanılabilir; hipoglisemi eğitimi.' }
-      : e >= 30 ? { status: 'dikkat', text: 'Düşük dozla başla; hipoglisemi riski artar.' }
-      : { status: 'hayir', text: 'Kaçınılır; uzamış hipoglisemi riski.' },
+      : e >= 30 ? { status: 'dikkat', text: 'Doz %50 azaltılır; hipoglisemi riski artar.' }
+      : { status: 'hayir', text: 'Tercihen kullanılmaz; uzamış hipoglisemi riski.' },
   },
   {
     drug: 'Glimepirid', group: 'Oral',
     eval: e => e >= 60 ? { status: 'ok', text: 'Kullanılabilir; hipoglisemi eğitimi.' }
       : e >= 30 ? { status: 'dikkat', text: '1 mg ile başla; gliklazid MR tercih edilir.' }
-      : { status: 'hayir', text: 'Kaçınılır.' },
+      : { status: 'hayir', text: 'Kullanılmaz.' },
   },
   {
     drug: 'Pioglitazon', group: 'Oral',
-    eval: () => ({ status: 'ok', text: 'Doz ayarı gerekmez; sıvı retansiyonu ve ödem izlenir.' }),
+    eval: e => e >= 30 ? { status: 'ok', text: 'Doz ayarı gerekmez; sıvı retansiyonu ve ödem izlenir.' }
+      : e >= 15 ? { status: 'dikkat', text: 'Sıvı retansiyonu nedeniyle dikkatle, gerekirse doz azaltılarak.' }
+      : { status: 'hayir', text: 'TEMD: eGFR < 15’te yalnızca insülin.' },
   },
   {
     drug: 'Repaglinid', group: 'Oral',
-    eval: e => e >= 30 ? { status: 'ok', text: 'Kullanılabilir.' } : { status: 'dikkat', text: 'KBH’de kullanılabilir; düşük dozla başla.' },
+    eval: e => e >= 30 ? { status: 'ok', text: 'Kullanılabilir.' }
+      : e >= 15 ? { status: 'dikkat', text: 'Tercihen kullanılmaz; gerekirse düşük dozla.' }
+      : { status: 'hayir', text: 'TEMD: eGFR < 15’te yalnızca insülin.' },
   },
   {
     drug: 'Akarboz', group: 'Oral',
-    eval: e => e >= 30 ? { status: 'ok', text: 'Kullanılabilir; GİS gaz şikâyeti.' } : { status: 'hayir', text: 'Önerilmez.' },
+    eval: e => e >= 25 ? { status: 'ok', text: 'Kullanılabilir; GİS gaz şikâyeti.' } : { status: 'hayir', text: 'Kontrendike (eGFR < 25).' },
   },
   {
     drug: 'İnsülin', group: 'Enjektabl',
     eval: e => e >= 45 ? { status: 'ok', text: 'İhtiyaca göre doz.' }
       : e >= 30 ? { status: 'dikkat', text: 'Renal insülin yıkımı azalır; hipoglisemi riski artar, yakın izlem.' }
-      : { status: 'dikkat', text: 'Doz %25-50 azaltılabilir; yakın izlem.' },
+      : { status: 'dikkat', text: 'Hipoglisemi riski nedeniyle doz azaltılır (çoğu zaman %25-50); yakın izlem.' },
   },
   {
     drug: 'Finerenon (AKO ≥ 30 ise)', group: 'Böbrek koruma',
-    eval: e => e >= 60 ? { status: 'ok', text: '20 mg/gün (K⁺ ≤ 4,8). 4. haftada K⁺/eGFR; K⁺ > 5,5 ise kes.' }
-      : e >= 25 ? { status: 'ok', text: '10 mg/gün (K⁺ ≤ 4,8). 4. haftada K⁺/eGFR; K⁺ > 5,5 ise kes.' }
+    eval: e => e >= 60 ? { status: 'ok', text: '20 mg/gün (K⁺ ≤ 4,8). 1. ayda K⁺/eGFR; K⁺ > 5,5 ise kes.' }
+      : e >= 25 ? { status: 'ok', text: '10 mg/gün (K⁺ ≤ 4,8). 1. ayda K⁺/eGFR; K⁺ > 5,5 ise kes.' }
       : { status: 'hayir', text: 'eGFR < 25’te başlanmaz.' },
   },
 ];
@@ -111,7 +121,9 @@ const RenalDoseCheck: React.FC = () => {
   const g = gCategory(egfr);
   const a = ako !== null && !isNaN(ako) ? aCategory(ako) : null;
 
-  const followUp = egfr < 30
+  const followUp = egfr < 15
+    ? 'TEMD: eGFR < 15 veya diyalizde insülin dışı antihiperglisemik önerilmez (D). Nefroloji ile ortak izlem.'
+    : egfr < 30
     ? 'Nefroloji sevki (eGFR < 30). 3 ayda bir eGFR/AKO, doz ayarları ve renal replasman hazırlığı.'
     : (egfr < 60 || (a && a.code !== 'A1'))
       ? '3-6 ayda bir eGFR ve AKO. ACE-İ/ARB maks. tolere doz; SGLT2-İ; AKO ≥ 30 sürüyorsa finerenon. Hızlı progresyon veya atipik hematüride nefroloji sevki.'

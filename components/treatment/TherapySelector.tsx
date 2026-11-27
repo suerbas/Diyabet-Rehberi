@@ -40,6 +40,50 @@ const drugNames: Record<string, string> = {
   finerenon: 'Finerenon',
 };
 
+// Example agents with Turkish brand names and usual doses (TEMD 2026 Tablo 7.1-7.10 and Ek Tablo 1.1-1.3)
+interface Example { agent: string; brands: string; dose: string }
+const examples: Record<string, Example[]> = {
+  metformin: [
+    { agent: 'Metformin', brands: 'Glucophage, Glifor, Matofin', dose: '500 mg/gün ile başla → 500-2500 mg/gün, 2-3 doz, yemekle' },
+    { agent: 'Metformin uzun salınımlı', brands: 'Glifor SR, Matofin XR', dose: '500-2000 mg/gün, tercihen akşam' },
+  ],
+  sglt2: [
+    { agent: 'Dapagliflozin', brands: 'Forziga', dose: '10 mg/gün (5-10 mg)' },
+    { agent: 'Empagliflozin', brands: 'Jardiance', dose: '10 mg/gün (25 mg’a çıkılabilir)' },
+  ],
+  glp1: [
+    { agent: 'Semaglutid', brands: 'Ozempic', dose: 'Haftada 1 SC: 0,25 mg → idame 0,5-1 mg' },
+    { agent: 'Dulaglutid', brands: 'Trulicity', dose: 'Haftada 1 SC: 0,75-1,5 mg' },
+    { agent: 'Liraglutid', brands: 'Victoza', dose: 'Günde 1 SC: 0,6 mg → idame 1,2-1,8 mg' },
+  ],
+  tirzepatid: [
+    { agent: 'Tirzepatid', brands: 'Mounjaro', dose: 'Haftada 1 SC: 2,5 mg × 4 hafta → 5 mg; 4 haftada bir +2,5 mg (maks. 15 mg)' },
+  ],
+  dpp4: [
+    { agent: 'Sitagliptin', brands: 'Januvia', dose: '100 mg/gün (eGFR 30-44: 50 mg)' },
+    { agent: 'Vildagliptin', brands: 'Galvus', dose: '50 mg günde 1-2 kez' },
+    { agent: 'Linagliptin', brands: 'Trajenta', dose: '5 mg/gün, böbrek dozu gerekmez' },
+  ],
+  su: [
+    { agent: 'Gliklazid MR', brands: 'Diamicron MR', dose: '30-120 mg/gün, kahvaltıda tek doz' },
+    { agent: 'Glimepirid', brands: 'Amaryl', dose: '1 mg ile başla → 1-8 mg/gün, kahvaltıda' },
+  ],
+  tzd: [
+    { agent: 'Pioglitazon', brands: 'Actos, Dropia', dose: '15-45 mg/gün, yemekten bağımsız' },
+  ],
+  insulin: [
+    { agent: 'Glargin U100', brands: 'Lantus, Basaglar', dose: '10 Ü veya 0,1-0,2 Ü/kg/gün, akşam ya da yatarken' },
+    { agent: 'Glargin U300 / Detemir', brands: 'Toujeo / Levemir', dose: 'Aynı başlangıç; 3 günde bir APG’ye göre titre' },
+  ],
+  rasb: [
+    { agent: 'Ramipril', brands: 'Delix', dose: '2,5 mg/gün → maks. 10 mg/gün' },
+    { agent: 'Losartan', brands: 'Cozaar', dose: '50 mg/gün → maks. 100 mg/gün' },
+  ],
+  finerenon: [
+    { agent: 'Finerenon', brands: 'Kerendia', dose: 'eGFR 25-59: 10 mg/gün · ≥ 60: 20 mg/gün (K⁺ ≤ 4,8)' },
+  ],
+};
+
 const levelRank: Record<Level, number> = { kacin: 3, oncelikli: 2, uygun: 1 };
 
 function buildRules(sel: Set<string>, hba1c: number | null, katabolik: boolean): { rules: Rule[]; notes: string[] } {
@@ -47,12 +91,12 @@ function buildRules(sel: Set<string>, hba1c: number | null, katabolik: boolean):
   const notes: string[] = [];
   const any = sel.size > 0;
 
-  r.push({ drug: 'metformin', level: 'uygun', reason: 'Kontrendikasyon yoksa temel tedavi; eGFR < 30’da kesilir, 30-44’te maks. 1000 mg.' });
+  r.push({ drug: 'metformin', level: 'uygun', reason: 'Kontrendikasyon yoksa temel tedavi; eGFR < 30’da kontrendike, 30-44’te yeni başlanmaz, kullanıyorsa doz %50 azaltılır.' });
 
   if (sel.has('askvh')) {
     r.push({ drug: 'glp1', level: 'oncelikli', reason: 'ASKVH: KV yararı kanıtlı GLP-1 RA, HbA1c’den bağımsız eklenir.' });
     r.push({ drug: 'sglt2', level: 'oncelikli', reason: 'ASKVH: KV yararı kanıtlı SGLT2-İ, HbA1c’den bağımsız eklenir.' });
-    notes.push('ASKVH: LDL-K < 55 mg/dL (yüksek yoğunluklu statin ± ezetimib), KB < 130/80, sekonder korumada aspirin 75-100 mg.');
+    notes.push('ASKVH: LDL-K < 55 mg/dL (yüksek yoğunluklu statin ± ezetimib), KB 120-130/70-80 mmHg, sekonder korumada aspirin 75-100 mg.');
   }
   if (sel.has('ky')) {
     r.push({ drug: 'sglt2', level: 'oncelikli', reason: 'Kalp yetersizliği: düşük ve korunmuş EF’de SGLT2-İ zorunlu tercih.' });
@@ -61,7 +105,7 @@ function buildRules(sel: Set<string>, hba1c: number | null, katabolik: boolean):
     notes.push('HFpEF + obezitede GLP-1 RA veya tirzepatid semptom ve kilo açısından yararlı.');
   }
   if (sel.has('kbh')) {
-    r.push({ drug: 'sglt2', level: 'oncelikli', reason: 'KBH: eGFR ≥ 20 ise başlanır; glisemik etki düşse de organ koruma sürer.' });
+    r.push({ drug: 'sglt2', level: 'oncelikli', reason: 'KBH: empagliflozin eGFR ≥ 20, dapagliflozin ≥ 25 ise başlanır; glisemik etki düşse de organ koruma sürer.' });
     r.push({ drug: 'glp1', level: 'oncelikli', reason: 'KBH: ek böbrek ve KV koruma; glisemi için tercih edilen ek ajan.' });
     r.push({ drug: 'su', level: 'kacin', reason: 'KBH: klerens azalır, uzamış hipoglisemi riski (glimepirid özellikle).' });
     notes.push('eGFR’ye göre doz ayarı için “eGFR & Doz” sekmesine bakın. İlk 2-4 haftada %10-20 eGFR düşüşü SGLT2-İ ile fizyolojiktir.');
@@ -69,7 +113,7 @@ function buildRules(sel: Set<string>, hba1c: number | null, katabolik: boolean):
   if (sel.has('albuminuri')) {
     r.push({ drug: 'rasb', level: 'oncelikli', reason: 'Albüminüri: maksimum tolere dozda ACE-İ veya ARB (ikisi birlikte verilmez).' });
     r.push({ drug: 'sglt2', level: 'oncelikli', reason: 'Albüminüri: nefroproteksiyonun 2. sütunu.' });
-    r.push({ drug: 'finerenon', level: 'uygun', reason: 'RAS blokajına rağmen AKO ≥ 30 ve K⁺ ≤ 4,8 ise eklenir; 4. haftada K⁺/eGFR kontrolü.' });
+    r.push({ drug: 'finerenon', level: 'uygun', reason: 'RAS blokajına rağmen AKO ≥ 30 ve K⁺ ≤ 4,8 ise eklenir (eGFR ≥ 25); 1. ayda K⁺/eGFR kontrolü.' });
   }
   if (sel.has('masld')) {
     r.push({ drug: 'glp1', level: 'oncelikli', reason: 'MASLD/MASH: kilo kaybı ve steatohepatit gerilemesi.' });
@@ -89,7 +133,7 @@ function buildRules(sel: Set<string>, hba1c: number | null, katabolik: boolean):
     r.push({ drug: 'su', level: 'kacin', reason: 'Hipoglisemi riski: düşme, aritmi ve demans progresyonu ile ilişkili.' });
     r.push({ drug: 'dpp4', level: 'oncelikli', reason: 'Hipoglisemi yapmaz, iyi tolere edilir; yaşlıda basitleştirmede tercih.' });
     r.push({ drug: 'sglt2', level: 'uygun', reason: 'Hipoglisemi riski düşük; dehidratasyona dikkat.' });
-    notes.push('Kırılgan yaşlıda HbA1c hedefi < %8,0 (ileri kırılganlıkta < %8,5). Karmaşık rejimler sabah tek doz bazal veya DPP-4İ ile basitleştirilir.');
+    notes.push('Kırılgan yaşlıda HbA1c hedefi < %7,5-8,0 (bakıma muhtaç ileri kırılganlıkta < %8,0-8,5). Karmaşık rejimler sabah tek doz bazal veya DPP-4İ ile basitleştirilir.');
   }
   if (sel.has('maliyet')) {
     if (!sel.has('hipo') && !sel.has('kbh') && !sel.has('obezite')) {
@@ -177,14 +221,23 @@ const TherapySelector: React.FC = () => {
   }, [selected, validHba1c, katabolik]);
 
   return (
-    <div className="grid lg:grid-cols-5 gap-8">
-      {/* Inputs */}
-      <div className="lg:col-span-2">
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm lg:sticky lg:top-24">
-          <h3 className="font-bold text-lg text-slate-900 mb-1">Hastanın durumu</h3>
-          <p className="text-sm text-slate-500 mb-5">Uyan tüm durumları işaretleyin. Hiçbiri seçilmezse komorbiditesiz yaklaşım gösterilir.</p>
+    <div className="space-y-8">
+      {/* Inputs: full-width panel, conditions in a grid so the form stays short and results sit right below */}
+      <div>
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 md:p-6 shadow-sm">
+          <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-1 mb-4 border-b-2 border-black pb-3">
+            <h3 className="font-bold text-lg text-slate-900">Hastanın durumu</h3>
+            <p className="text-sm text-slate-600 flex flex-wrap items-center gap-x-4">
+              Uyan tüm durumları işaretleyin. Hiçbiri seçilmezse komorbiditesiz yaklaşım gösterilir.
+              {(selected.size > 0 || hba1cText || katabolik) && (
+                <button onClick={() => { setSelected(new Set()); setHba1cText(''); setKatabolik(false); }} className="font-semibold text-slate-900 underline">
+                  Seçimleri temizle
+                </button>
+              )}
+            </p>
+          </div>
 
-          <div className="space-y-2">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2">
             {conditions.map(c => {
               const on = selected.has(c.id);
               return (
@@ -192,7 +245,7 @@ const TherapySelector: React.FC = () => {
                   key={c.id}
                   onClick={() => toggle(c.id)}
                   aria-pressed={on}
-                  className={`w-full flex items-start gap-3 p-3 rounded-xl border text-left transition-colors ${on ? 'border-primary bg-sky-50' : 'border-slate-200 hover:bg-slate-50'}`}
+                  className={`w-full h-full flex items-start gap-3 p-3 rounded-xl border text-left transition-colors ${on ? 'border-primary bg-yellow-300' : 'border-slate-200 hover:bg-yellow-100'}`}
                 >
                   <span className={`mt-0.5 w-5 h-5 rounded-md border flex items-center justify-center shrink-0 ${on ? 'bg-primary border-primary text-white' : 'border-slate-300 bg-white'}`}>
                     {on && <Check size={14} />}
@@ -207,24 +260,28 @@ const TherapySelector: React.FC = () => {
             })}
           </div>
 
-          <div className="mt-6 pt-5 border-t border-slate-100 space-y-3">
-            <label className="block">
-              <span className="text-sm font-semibold text-slate-800">Güncel HbA1c (%)</span>
+          {/* Two equal halves, each lining up with two columns of the grid above */}
+          <div className="mt-4 pt-4 border-t-2 border-black grid lg:grid-cols-2 gap-2">
+            <label className="flex items-center justify-between gap-4 p-3 rounded-xl border border-slate-200 cursor-text">
+              <span className="font-sans">
+                <span className="block font-semibold text-sm text-slate-800">Güncel HbA1c (%)</span>
+                <span className="block text-xs text-slate-500">≥ %9 ise insülin değerlendirilir; genel hedef &lt; %7,0</span>
+              </span>
               <input
                 type="text"
                 inputMode="decimal"
                 placeholder="örn. 8,4"
                 value={hba1cText}
                 onChange={e => setHba1cText(e.target.value)}
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-28 shrink-0 rounded-lg border border-slate-300 px-3 py-2 text-sm text-right focus:outline-none"
               />
             </label>
             <button
               onClick={() => setKatabolik(k => !k)}
               aria-pressed={katabolik}
-              className={`w-full flex items-start gap-3 p-3 rounded-xl border text-left transition-colors ${katabolik ? 'border-amber-400 bg-amber-50' : 'border-slate-200 hover:bg-slate-50'}`}
+              className={`w-full flex items-center gap-3 p-3 rounded-xl border text-left transition-colors ${katabolik ? 'border-amber-400 bg-amber-50' : 'border-slate-200 hover:bg-yellow-100'}`}
             >
-              <span className={`mt-0.5 w-5 h-5 rounded-md border flex items-center justify-center shrink-0 ${katabolik ? 'bg-amber-500 border-amber-500 text-white' : 'border-slate-300 bg-white'}`}>
+              <span className={`w-5 h-5 rounded-md border flex items-center justify-center shrink-0 ${katabolik ? 'bg-amber-500 border-amber-500 text-white' : 'border-slate-300 bg-white'}`}>
                 {katabolik && <Check size={14} />}
               </span>
               <span>
@@ -232,27 +289,22 @@ const TherapySelector: React.FC = () => {
                 <span className="block text-xs text-slate-500">İstemsiz kilo kaybı, poliüri-polidipsi, ketozis</span>
               </span>
             </button>
-            {(selected.size > 0 || hba1cText || katabolik) && (
-              <button onClick={() => { setSelected(new Set()); setHba1cText(''); setKatabolik(false); }} className="text-xs text-slate-500 underline">
-                Seçimleri temizle
-              </button>
-            )}
           </div>
         </div>
       </div>
 
       {/* Output */}
-      <div className="lg:col-span-3">
-        <div className="mb-4 flex items-center justify-between">
+      <div aria-live="polite">
+        <div className="mb-4 flex items-center justify-between border-b-2 border-black pb-3">
           <h3 className="font-bold text-lg text-slate-900">Önerilen yaklaşım</h3>
-          <span className="text-xs text-slate-500">{selected.size === 0 ? 'Komorbidite yok' : `${selected.size} durum seçili`}</span>
+          <span className="text-xs text-slate-500 text-right">{selected.size === 0 ? 'Komorbidite yok' : `${selected.size} durum seçili`}</span>
         </div>
 
-        <div className="space-y-3">
+        <div className="grid md:grid-cols-2 gap-4">
           {merged.map(item => {
             const s = levelStyle[item.level];
             return (
-              <div key={item.drug} className={`border rounded-xl p-4 ${s.box}`}>
+              <div key={item.drug} className={`border rounded-xl p-4 md:[&:last-child:nth-child(odd)]:col-span-2 ${s.box}`}>
                 <div className="flex items-center justify-between gap-3 mb-2">
                   <span className="font-bold text-slate-900 flex items-center gap-2">
                     {item.drug === 'insulin' && <Syringe size={16} className="text-slate-600" />}
@@ -262,6 +314,19 @@ const TherapySelector: React.FC = () => {
                     {s.icon}{s.label}
                   </span>
                 </div>
+                {examples[item.drug] && item.level !== 'kacin' && (
+                  <dl className="mb-3 bg-white border-2 border-black divide-y-2 divide-black text-sm">
+                    {examples[item.drug].map(ex => (
+                      <div key={ex.agent} className="px-3 py-2 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-x-4 gap-y-0.5">
+                        <dt className="shrink-0">
+                          <span className="font-bold text-slate-900">{ex.agent}</span>
+                          <span className="text-slate-600"> · {ex.brands}</span>
+                        </dt>
+                        <dd className="font-mono text-xs text-slate-800 sm:text-right">{ex.dose}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                )}
                 <ul className="space-y-1">
                   {Array.from(new Set(item.reasons)).map((reason, i) => (
                     <li key={i} className="text-sm text-slate-700 flex gap-2">
@@ -274,6 +339,8 @@ const TherapySelector: React.FC = () => {
             );
           })}
         </div>
+
+        <p className="mt-3 text-xs text-slate-600">Ticari adlar örnektir (TEMD 2026 Ek Tablo 1); eşdeğer jenerikler kullanılabilir. Dozlar böbrek işlevi ve yan etkilere göre bireyselleştirilir.</p>
 
         {validHba1c !== null && validHba1c < 9 && !katabolik && (
           <p className="mt-4 text-sm text-slate-600">

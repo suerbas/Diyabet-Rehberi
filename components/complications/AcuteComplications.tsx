@@ -56,19 +56,20 @@ const AcuteComplications: React.FC = () => (
       <DataTable
         head={['', 'Diyabetik ketoasidoz (DKA)', 'Hiperozmolar hiperglisemik durum (HHD)']}
         rows={[
-          ['Glukoz', '> 250 mg/dL (SGLT2-İ ile öglisemik olabilir)', '> 600 mg/dL'],
-          ['pH / HCO₃', 'pH < 7,30; HCO₃ < 18; anyon açığı > 12', 'pH > 7,30; HCO₃ > 18'],
+          ['Glukoz', '> 200 mg/dL (SGLT2-İ ile öglisemik olabilir)', '> 600 mg/dL'],
+          ['pH / HCO₃', 'pH < 7,30 ve/veya HCO₃ < 18; anyon açığı > 10', 'pH > 7,30; HCO₃ ≥ 15'],
+          ['Keton', 'β-hidroksibütirat ≥ 3 mmol/L veya idrar ketonu ≥ 2+', 'β-hidroksibütirat < 3 mmol/L'],
           ['Ozmolalite', 'Değişken', '> 320 mOsm/kg (2×Na + glukoz/18)'],
           ['Gelişim', '< 24 saatte, hızlı', 'Günler-haftalar içinde, sinsi'],
           ['Klinik', 'Bulantı, kusma, karın ağrısı, Kussmaul solunumu, aseton kokusu', 'Ağır dehidratasyon, letarji, stupor, fokal nörolojik bulgu'],
-          ['İlk saat sıvı', '1000 mL %0,9 NaCl', '1000-1500 mL %0,9 NaCl'],
+          ['İlk sıvı', 'İlk 2-4 saatte 500-1000 mL/sa %0,9 NaCl (şokta 1 L/sa)', 'Aynı; yaşlı, kalp veya böbrek yetersizliğinde sıvı yüküne dikkat'],
         ]}
       />
       <div className="grid md:grid-cols-2 gap-4 mt-4">
         <Card title="Acil sevk öncesi" tone="red">
           <Bullets items={[
             'Damar yolu, %0,9 NaCl başlat; kan glukozu, keton, elektrolitler, kan gazı',
-            'K⁺ < 3,3 mEq/L iken insülin verilmez (aritmi riski)',
+            'K⁺ < 3,5 mEq/L ise önce K⁺ düzeltilir, insülin sonra başlanır (aritmi riski)',
             'Tetikleyiciyi sorgula: enfeksiyon, insülin atlama, MI, inme, pankreatit, SGLT2-İ',
             'HHD’de mortalite DKA’dan yüksektir; yaşlıda bilinç değişikliğinde mutlaka düşün',
           ]} />

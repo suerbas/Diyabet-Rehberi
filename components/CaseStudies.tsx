@@ -1,3 +1,4 @@
+import { PageHeader } from './shared/ui';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BookOpen, CheckCircle, XCircle, ArrowLeft, ArrowRight, RefreshCw, Play, Trophy, RotateCcw, Sparkles, ExternalLink, Home } from 'lucide-react';
@@ -314,17 +315,12 @@ const CaseStudies: React.FC = () => {
 };
 
 const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <section id="cases" className="py-16 bg-slate-100 min-h-screen">
+  <section id="cases" className="pt-10 md:pt-12 pb-16">
     <div className="container mx-auto px-4">
-      <div className="text-center mb-10">
-        <div className="inline-flex items-center justify-center p-3 bg-indigo-100 rounded-full text-indigo-600 mb-4">
-          <BookOpen size={32} />
-        </div>
-        <span className="block w-fit mx-auto text-xs font-bold uppercase tracking-wider text-primary bg-sky-100 px-3 py-1 rounded-full mb-3">TEMD 2026 ile güncellendi</span>
-        <h2 className="text-3xl md:text-4xl font-bold text-slate-900">Vaka Testleri</h2>
-        <p className="text-slate-600 mt-3 max-w-2xl mx-auto">
+      <div className="max-w-3xl mx-auto">
+        <PageHeader no="06" title="Vaka Testleri" icon={<BookOpen size={20} />}>
           Birinci basamakta sık karşılaşılan klinik senaryolarla bilginizi sınayın. Her açıklama ilgili rehber bölümüne bağlanır.
-        </p>
+        </PageHeader>
       </div>
       <div className="max-w-3xl mx-auto">{children}</div>
     </div>

@@ -12,12 +12,15 @@ const riskInfo: Record<Risk, { label: string; ldl: number; nonHdl: number; halve
 
 const veryHighCriteria = [
   { id: 'askvh', label: 'ASKVH (koroner, serebrovasküler, periferik arter)' },
-  { id: 'organ', label: 'Hedef organ hasarı: eGFR < 45, AKO > 300, retinopati veya nöropati' },
-  { id: 'rf3', label: '≥ 3 majör risk faktörü (yaş, HT, dislipidemi, sigara, obezite)' },
+  { id: 'organ', label: 'Hedef organ hasarı: mikroalbüminüri (AKO ≥ 30), retinopati veya nöropati' },
+  { id: 'kbh4', label: 'Evre 4 KBH (eGFR < 30)' },
+  { id: 'rf3', label: '≥ 3 majör KV risk faktörü (yaş, HT, dislipidemi, sigara, obezite)' },
 ];
 const highCriteria = [
-  { id: 'sure10', label: 'Diyabet süresi ≥ 10 yıl' },
-  { id: 'rf12', label: '1-2 ek risk faktörü' },
+  { id: 'sure10', label: 'Hedef organ hasarı yok, diyabet süresi ≥ 10 yıl' },
+  { id: 'rf12', label: 'İlave bir risk faktörü' },
+  { id: 'kbh3', label: 'Evre 3 KBH (eGFR 30-59)' },
+  { id: 'tekrf', label: 'Belirgin tek risk faktörü: TK > 310, LDL-K > 190 mg/dL veya KB ≥ 180/110' },
 ];
 
 const LdlTargetTool: React.FC = () => {
@@ -59,7 +62,7 @@ const LdlTargetTool: React.FC = () => {
           <div className="text-xs font-bold uppercase tracking-wide text-orange-700 mb-2">Yüksek risk kriterleri</div>
           <div className="space-y-2">{highCriteria.map(c => <Check2 key={c.id} {...c} />)}</div>
         </div>
-        <p className="text-xs text-slate-500">Hiçbiri yoksa orta risk: genç (Tip 1 &lt; 35, Tip 2 &lt; 50 yaş), süre &lt; 10 yıl, ek risk faktörü yok.</p>
+        <p className="text-xs text-slate-500">Hiçbiri yoksa orta risk: genç (Tip 1 &lt; 35, Tip 2 &lt; 50 yaş), süre &lt; 10 yıl, ek risk faktörü yok. Çok yüksek riskte maksimum statine rağmen tekrarlayan ASKVH veya polivasküler tutulum varsa LDL-K hedefi &lt; 40 mg/dL’dir.</p>
       </div>
       <div>
         <div className={`rounded-2xl text-white p-5 ${info.tone}`}>
@@ -92,19 +95,20 @@ const Cardiovascular: React.FC = () => (
     </div>
 
     <div>
-      <SectionTitle icon={<Gauge size={20} />} sub="THU 2025 ile uyumlu hedefler ve basamaklar.">Hipertansiyon</SectionTitle>
+      <SectionTitle icon={<Gauge size={20} />} sub="TEMD 2026 · Türk Hipertansiyon Uzlaşı Raporu 2025: yaşa ve kırılganlığa göre ilaç eşiği ve hedef.">Hipertansiyon</SectionTitle>
       <DataTable
-        head={['Hasta grubu', 'KB hedefi', 'Not']}
+        head={['Hasta grubu', 'İlaç eşiği', 'KB hedefi', 'Not']}
         rows={[
-          ['Çoğu erişkin diyabetli', '< 130/80 mmHg', 'Albüminüri / KBH / KAH varsa ACE-İ veya ARB'],
-          ['Yaşlı / kırılgan', '< 140/90 mmHg (bireysel)', 'Ortostatik hipotansiyon ve düşme izlenir'],
-          ['Gebelik', '110-135 / 80-85 mmHg', 'Metildopa, labetalol, uzun etkili nifedipin; ACE-İ/ARB/spironolakton kontrendike'],
+          ['18-79 yaş', '≥ 140/90 mmHg', '120-130 / 70-80 mmHg', 'Komorbiditeden bağımsız (DM, KAH, KBH, KY)'],
+          ['≥ 80 yaş, dinç', 'Sistolik ≥ 140', 'Sistolik 130-140', '80 yaş öncesi başlanan ve tolere edilen tedavi yalnızca yaş nedeniyle azaltılmaz'],
+          ['Kırılgan (yaştan bağımsız)', 'Sistolik ≥ 160', 'Sistolik 140-150', 'Organ hipoperfüzyonu, ortostatik hipotansiyon ve düşme izlenir'],
+          ['Gebelik', '≥ 140/90 mmHg', '110-135 / 80-85 mmHg', 'Metildopa, labetalol, nifedipin; ACE-İ/ARB kontrendike'],
         ]}
       />
       <div className="grid sm:grid-cols-3 gap-3 mt-4">
-        <Card title="1. KB ≥ 130/80">Yaşam tarzı + ilaç tedavisi başlanır.</Card>
-        <Card title="2. KB ≥ 150/90">Başlangıçta ikili tek tablet: ACE-İ/ARB + KKB veya tiyazid.</Card>
-        <Card title="3. Dirençli HT">3 ilaca rağmen yüksekse 4. ajan spironolakton; K⁺ ve eGFR izlenir.</Card>
+        <Card title="1. KB 130-139 / 80-89">3 ay yaşam tarzı değişikliği. Sürerse ve yüksek riskliyse (&gt; 40 yaş, &gt; 10 yıl DM, komplikasyon, sigara, obezite) monoterapi, tercihen ACE-İ veya ARB.</Card>
+        <Card title="2. KB ≥ 140/90">Beklemeden yaşam tarzı + kombinasyon: ACE-İ veya ARB + tiyazid veya KKB. ACE-İ ile ARB birlikte kullanılmaz.</Card>
+        <Card title="3. Dirençli HT">Üçlü tedaviye rağmen hedefe ulaşılamazsa MRA (örn. spironolakton) eklenir; K⁺ ve eGFR izlenir.</Card>
       </div>
     </div>
 

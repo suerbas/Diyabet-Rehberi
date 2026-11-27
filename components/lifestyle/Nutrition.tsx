@@ -26,15 +26,15 @@ const Nutrition: React.FC = () => (
       ))}
     </div>
 
-    <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-8 text-white flex flex-col md:flex-row items-center gap-8">
-      <div className="shrink-0 bg-white/10 p-4 rounded-full"><Hand size={48} className="text-blue-300" /></div>
+    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex flex-col md:flex-row md:items-center gap-4">
+      <div className="shrink-0 w-14 h-14 bg-yellow-300 border-2 border-black flex items-center justify-center"><Hand size={30} /></div>
       <div className="flex-1">
-        <h3 className="text-2xl font-bold mb-2">Porsiyon kontrolü: el modeli</h3>
-        <p className="text-slate-300 mb-4">Kalori hesabı yerine hastaya kendi elini ölçü olarak kullanmayı öğretin.</p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-          {[['Avuç içi', 'Protein'], ['İki avuç / yumruk', 'Sebze'], ['Bir avuç', 'Karbonhidrat'], ['Başparmak', 'Yağ']].map(([a, b]) => (
-            <div key={a} className="bg-white/10 p-3 rounded-lg text-center">
-              <span className="block font-bold text-blue-300 mb-1">{a}</span>{b}
+        <h3 className="text-xl font-bold mb-1">Porsiyon kontrolü: el modeli</h3>
+        <p className="text-slate-700 text-sm mb-3">Kalori hesabı yerine hastaya kendi elini ölçü olarak kullanmayı öğretin.</p>
+        <div className="grid grid-cols-2 md:grid-cols-4 border-2 border-black text-sm">
+          {[['Avuç içi', 'Protein'], ['İki avuç / yumruk', 'Sebze'], ['Bir avuç', 'Karbonhidrat'], ['Başparmak', 'Yağ']].map(([a, b], i) => (
+            <div key={a} className={`p-2 text-center border-black ${i % 2 ? 'border-l-2' : ''} ${i > 1 ? 'border-t-2 md:border-t-0' : ''} ${i === 2 ? 'md:border-l-2' : ''}`}>
+              <span className="block font-bold">{a}</span><span className="text-slate-700">{b}</span>
             </div>
           ))}
         </div>

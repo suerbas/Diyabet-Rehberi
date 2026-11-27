@@ -41,7 +41,7 @@ export const cases: CaseStudy[] = [
     title: '1. saat OGTT kriteri',
     description: '44 yaşında kadın, asemptomatik. BKİ 29 kg/m², annesinde Tip 2 DM var. Tarama amaçlı 75 g OGTT yapılıyor.',
     findings: ['APG: 108 mg/dL', '1. saat PG: 214 mg/dL', '2. saat PG: 176 mg/dL', 'HbA1c: %6,1'],
-    question: 'TEMD 2026 kriterlerine göre bu sonuç nasıl yorumlanır?',
+    question: 'TEMD 2026 Tablo 1.1’de yer alan IDF 2024 ölçütüne göre bu sonuç nasıl yorumlanır?',
     options: [
       'Normal glukoz toleransı; 3 yıl sonra tekrar tarama',
       'Kombine prediyabet (BAG + BGT); yalnızca yaşam tarzı',
@@ -49,7 +49,7 @@ export const cases: CaseStudy[] = [
       'Gestasyonel diyabet',
     ],
     correctAnswer: 2,
-    explanation: 'TEMD 2026, IDF 2024 önerisiyle 75 g OGTT 1. saat plazma glukozunu tanıya ekledi: ≥ 155 mg/dL ara hiperglisemi (yüksek risk), ≥ 209 mg/dL diyabet. Bu hastada APG ve 2. saat değeri prediyabet aralığında olsa da 1. saat 214 mg/dL’dir. Semptom yoksa tanı ayrı bir günde tekrar testle doğrulanır.',
+    explanation: 'IDF 2024 görüşüne göre 75 g OGTT 1. saat plazma glukozu ≥ 155 mg/dL ara hiperglisemi (yüksek risk), ≥ 209 mg/dL diyabettir; TEMD 2026 bu ölçütü Tablo 1.1’de aktarır, ancak ülkemizde net öneri için çok merkezli çalışma gerektiğini belirtir. Bu hastada APG ve 2. saat değeri prediyabet aralığında olsa da 1. saat 214 mg/dL’dir. Semptom yoksa tanı ayrı bir günde tekrar testle doğrulanır.',
     link: L.tani,
   },
   {
@@ -139,7 +139,7 @@ export const cases: CaseStudy[] = [
       'Bazal insülin başla; diğer tedavilere dokunma',
     ],
     correctAnswer: 1,
-    explanation: 'ASKVH olan hastada HbA1c’den bağımsız olarak KV yararı kanıtlı SGLT2-İ veya GLP-1 RA eklenir. Çok yüksek risk kategorisinde LDL-K hedefi < 55 mg/dL ve ≥ %50 azalmadır; KB hedefi < 130/80. Albüminüri varlığı da ACE-İ titrasyonunu destekler. Sekonder korumada aspirin sürdürülür.',
+    explanation: 'ASKVH olan hastada HbA1c’den bağımsız olarak KV yararı kanıtlı SGLT2-İ veya GLP-1 RA eklenir. Çok yüksek risk kategorisinde LDL-K hedefi < 55 mg/dL ve ≥ %50 azalmadır; KB hedefi 120-130/70-80 mmHg. Albüminüri varlığı da ACE-İ titrasyonunu destekler. Sekonder korumada aspirin sürdürülür.',
     link: L.tedavi,
   },
   {

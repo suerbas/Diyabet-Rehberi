@@ -4,7 +4,7 @@ import { SectionTitle, DataTable, Card } from '../shared/ui';
 
 const visitChecklist = [
   { icon: <HeartPulse size={18} />, title: 'Glisemi ve hipoglisemi', text: 'HbA1c, ev ölçümleri, son 3 aydaki hipoglisemiler, araç kullanım güvenliği.' },
-  { icon: <Droplets size={18} />, title: 'Kardiyorenal ve hepatik', text: 'KB (< 130/80), LDL-K, eGFR, spot idrar AKO, FIB-4; organ koruyucu ilaç uyumu.' },
+  { icon: <Droplets size={18} />, title: 'Kardiyorenal ve hepatik', text: 'KB (hedef 120-130/70-80), LDL-K, eGFR, spot idrar AKO, FIB-4; organ koruyucu ilaç uyumu.' },
   { icon: <Footprints size={18} />, title: 'Ayak, göz, nöropati', text: 'Ayak muayenesi (monofilaman / Ipswich), yıllık göz dibi sevki, nöropatik yakınma sorgusu.' },
   { icon: <Syringe size={18} />, title: 'Enjeksiyon ve aşılar', text: 'Lipohipertrofi ve 4 mm iğne kontrolü; influenza, pnömokok, hepatit B; psikososyal destek.' },
 ];

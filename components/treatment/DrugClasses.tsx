@@ -28,9 +28,10 @@ const drugData: DrugClass[] = [
     hba1c: '%1,0-1,5',
     hypo: { text: 'Yok (monoterapide)', effect: 'iyi' },
     weight: { text: 'Nötr / hafif kayıp', effect: 'iyi' },
-    renal: 'eGFR ≥ 45 tam doz · 30-44 yeni başlanmaz, maks. 1000 mg · < 30 kesilir',
+    renal: 'eGFR ≥ 45 tam doz (45-59 dikkat) · 30-44 yeni başlanmaz, kullanıyorsa doz %50 azaltılır · < 30 kontrendike',
     agents: [
-      { name: 'Metformin HCl', brands: 'Glucophage, Glifor, Matofin, Diaformin', dose: 'Akşam yemeğiyle 500 mg; haftalık 500 mg artır → 2000 mg/gün (maks. 2550 mg)' },
+      { name: 'Metformin HCl', brands: 'Glucophage, Glifor, Matofin, Diaformin', dose: 'Günde 1 kez 500 mg ile başla, tedricen artır; 500-2500 mg/gün, 2-3 doza bölünmüş' },
+      { name: 'Metformin uzun salınımlı', brands: 'Glifor SR, Matofin XR, Diaformin XR', dose: '500-2000 mg/gün, günde 1-2 kez, tercihen akşam' },
     ],
     pros: ['Hipoglisemi yapmaz', 'Uzun dönem güvenlik verisi', 'Ekonomik'],
     cautions: [
@@ -48,10 +49,10 @@ const drugData: DrugClass[] = [
     hba1c: '%0,7-1,2',
     hypo: { text: 'Düşük (SU/insülinsiz)', effect: 'iyi' },
     weight: { text: '~2-3 kg kayıp', effect: 'iyi' },
-    renal: 'Organ koruma için eGFR ≥ 20’de başlanır; eGFR < 45’te glisemik etki azalır',
+    renal: 'Organ koruma için başlama sınırı: empagliflozin eGFR ≥ 20, dapagliflozin ≥ 25 · eGFR < 45’te glisemik etki azalır',
     agents: [
-      { name: 'Dapagliflozin', brands: 'Forziga', dose: '10 mg günde 1 kez' },
-      { name: 'Empagliflozin', brands: 'Jardiance', dose: '10 mg (25 mg’a çıkılabilir) günde 1 kez' },
+      { name: 'Dapagliflozin', brands: 'Forziga, Daplig, Jaglif', dose: '5-10 mg günde 1 kez, yemekten bağımsız' },
+      { name: 'Empagliflozin', brands: 'Jardiance, Gliflomed', dose: '10 mg (25 mg’a çıkılabilir) günde 1 kez' },
     ],
     pros: ['KY ve KBH’de organ koruma (HbA1c’den bağımsız)', 'Kan basıncını düşürür', 'Kilo kaybı'],
     cautions: [
@@ -72,12 +73,12 @@ const drugData: DrugClass[] = [
     hba1c: '%1,0-1,8',
     hypo: { text: 'Düşük (SU/insülinsiz)', effect: 'iyi' },
     weight: { text: '%5-15 kayıp', effect: 'iyi' },
-    renal: 'Doz ayarı gerekmez; dulaglutid eGFR ≥ 15’e dek',
+    renal: 'eGFR ≥ 15’te doz ayarı gerekmez · < 15’te mümkünse kullanılmaz',
     agents: [
-      { name: 'Semaglutid SC', brands: 'Ozempic', dose: 'Haftada 1: 0,25 → 0,5 → 1 mg (2 mg’a dek)' },
-      { name: 'Semaglutid oral', brands: 'Rybelsus', dose: 'Sabah aç karnına az su ile: 3 → 7 → 14 mg' },
-      { name: 'Dulaglutid', brands: 'Trulicity', dose: 'Haftada 1: 0,75 → 1,5 mg (4,5 mg’a dek)' },
-      { name: 'Liraglutid', brands: 'Victoza', dose: 'Günde 1: 0,6 → 1,2 → 1,8 mg' },
+      { name: 'Semaglutid SC', brands: 'Ozempic', dose: 'Haftada 1: 0,25 mg ile başla → idame 0,5-1 mg' },
+      { name: 'Semaglutid oral', brands: 'Rybelsus (TEMD 2026: ülkemizde yok)', dose: 'Sabah aç karnına az su ile: 3 mg, 1 ay sonra 7 mg, gerekirse 14 mg' },
+      { name: 'Dulaglutid', brands: 'Trulicity', dose: 'Haftada 1: 0,75 → 1,5 mg' },
+      { name: 'Liraglutid', brands: 'Victoza', dose: 'Günde 1: 0,6 mg ile başla → idame 1,2-1,8 mg' },
     ],
     pros: ['ASKVH’de MACE azalması', 'Güçlü HbA1c ve kilo etkisi', 'KBH progresyonunda azalma (semaglutid)'],
     cautions: [
@@ -97,9 +98,9 @@ const drugData: DrugClass[] = [
     hba1c: '%1,8-2,4',
     hypo: { text: 'Düşük (SU/insülinsiz)', effect: 'iyi' },
     weight: { text: '%15-20+ kayıp', effect: 'iyi' },
-    renal: 'Doz ayarı gerekmez; dehidratasyondan kaçın',
+    renal: 'eGFR ≥ 15’te doz ayarı gerekmez · < 15’te mümkünse kullanılmaz; dehidratasyondan kaçın',
     agents: [
-      { name: 'Tirzepatid', brands: 'Mounjaro', dose: 'Haftada 1: 2,5 mg, 4 haftada bir 2,5 mg artır → 5-15 mg' },
+      { name: 'Tirzepatid', brands: 'Mounjaro', dose: 'Haftada 1: 2,5 mg × 4 hafta → idame 5 mg; 4 haftada bir 2,5 mg artırılabilir (maks. 15 mg)' },
     ],
     pros: ['En güçlü HbA1c ve kilo etkisi', 'MASH ve kardiyometabolik yarar', 'Remisyon potansiyeli'],
     cautions: [
@@ -116,10 +117,10 @@ const drugData: DrugClass[] = [
     hba1c: '%0,5-0,8',
     hypo: { text: 'Yok (monoterapide)', effect: 'iyi' },
     weight: { text: 'Nötr', effect: 'notr' },
-    renal: 'Linagliptin doz ayarsız; sitagliptin ve vildagliptin eGFR’ye göre azaltılır',
+    renal: 'Linagliptin doz ayarsız; sitagliptin, vildagliptin ve saksagliptin eGFR’ye göre azaltılır',
     agents: [
-      { name: 'Sitagliptin', brands: 'Januvia', dose: '100 mg (eGFR 30-44: 50 mg; < 30: 25 mg)' },
-      { name: 'Vildagliptin', brands: 'Galvus', dose: '2x50 mg (eGFR < 50: 1x50 mg)' },
+      { name: 'Sitagliptin', brands: 'Januvia, Xelevia', dose: '100 mg günde 1 kez (eGFR 30-44: 50 mg; < 30: 25 mg)' },
+      { name: 'Vildagliptin', brands: 'Galvus, Vildabet', dose: '50 mg günde 1-2 kez (eGFR < 50: 1x50 mg)' },
       { name: 'Linagliptin', brands: 'Trajenta', dose: '5 mg günde 1 kez (tüm eGFR’lerde)' },
     ],
     pros: ['Çok iyi tolere edilir', 'Yaşlıda tedavi basitleştirmede tercih', 'Tek doz, oral'],
@@ -138,10 +139,10 @@ const drugData: DrugClass[] = [
     hba1c: '%1,0-2,0',
     hypo: { text: 'Yüksek', effect: 'kotu' },
     weight: { text: 'Artış', effect: 'kotu' },
-    renal: 'eGFR < 60’ta dikkat, < 30’da kaçınılır (gliklazid daha güvenli)',
+    renal: 'eGFR 30-60’ta gliklazid dozu %50 azaltılır · < 30’da kullanılmaz',
     agents: [
-      { name: 'Gliklazid MR', brands: 'Diamicron MR, Betanorm', dose: '30-120 mg sabah kahvaltıyla' },
-      { name: 'Glimepirid', brands: 'Amaryl, Glimax', dose: '1-4 mg günde 1 kez' },
+      { name: 'Gliklazid MR', brands: 'Diamicron MR, Betanorm MR', dose: '30-120 mg günde 1 kez, kahvaltıda' },
+      { name: 'Glimepirid', brands: 'Amaryl, Glimax', dose: '1 mg ile başla; 1-8 mg günde 1 kez, kahvaltıda' },
     ],
     pros: ['Hızlı ve güçlü etki', 'Düşük maliyet'],
     cautions: [
@@ -158,8 +159,8 @@ const drugData: DrugClass[] = [
     hba1c: '%0,5-1,4',
     hypo: { text: 'Yok', effect: 'iyi' },
     weight: { text: 'Artış + ödem', effect: 'kotu' },
-    renal: 'Doz ayarı gerekmez; sıvı retansiyonuna dikkat',
-    agents: [{ name: 'Pioglitazon', brands: 'Glitazone, Dropia', dose: '15-30 (45) mg günde 1 kez' }],
+    renal: 'Genellikle doz ayarı gerekmez; eGFR < 30’da sıvı retansiyonu nedeniyle dikkatle, gerekirse düşük doz',
+    agents: [{ name: 'Pioglitazon', brands: 'Actos, Dropia, Pioforce', dose: '15-45 mg günde 1 kez, yemekten bağımsız' }],
     pros: ['MASH’ta etkili', 'Güçlü insülin duyarlılaştırıcı', 'Ucuz, hipoglisemisiz'],
     cautions: [
       { term: 'Ödem ve KY', explanation: 'Sıvı retansiyonu kalp yetersizliğini ağırlaştırır.' },

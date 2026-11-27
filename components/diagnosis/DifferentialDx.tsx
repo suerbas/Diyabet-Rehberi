@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dna, Search, TestTube } from 'lucide-react';
-import { SectionTitle, DataTable, Card, Bullets } from './ui';
+import { SectionTitle, DataTable, Card, Bullets } from '../shared/ui';
 
 const DifferentialDx: React.FC = () => (
   <div className="max-w-5xl mx-auto space-y-10">

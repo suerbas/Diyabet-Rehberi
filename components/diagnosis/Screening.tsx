@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Users, Scale, Baby, HeartPulse, School, ChevronDown } from 'lucide-react';
-import { SectionTitle } from './ui';
+import { SectionTitle } from '../shared/ui';
 import Findrisk from './Findrisk';
 
 const whoToScreen = [

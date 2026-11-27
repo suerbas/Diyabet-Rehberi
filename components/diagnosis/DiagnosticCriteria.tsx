@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Stethoscope, FlaskConical, AlertTriangle, Check, RotateCcw } from 'lucide-react';
-import { SectionTitle, DataTable, Card, Bullets, NumField, parseNum } from './ui';
+import { SectionTitle, DataTable, Card, Bullets, NumField, parseNum } from '../shared/ui';
 
 type Verdict = { title: string; detail: string[]; tone: string };
 

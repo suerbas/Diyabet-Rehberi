@@ -1,6 +1,6 @@
 import React from 'react';
 import { Footprints, Pill, CalendarCheck } from 'lucide-react';
-import { SectionTitle, Card, Bullets } from './ui';
+import { SectionTitle, Card, Bullets } from '../shared/ui';
 
 const Prediabetes: React.FC = () => (
   <div className="max-w-5xl mx-auto space-y-10">

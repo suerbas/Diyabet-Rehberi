@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { UserCheck, Check, ShieldAlert, ListChecks } from 'lucide-react';
-import { SectionTitle, DataTable, Card, Bullets } from './ui';
+import { SectionTitle, DataTable, Card, Bullets } from '../shared/ui';
 
 const profiles = [
   { id: 'saglikli', label: 'Sağlıklı yaşlı', desc: 'Az sayıda kronik hastalık, bilişsel ve işlevsel durum korunmuş; yaşam beklentisi > 15 yıl', a1c: '< %7,0-7,5', fpg: '80-130', ppg: '< 160-180', bp: '< 130/80', tone: 'border-emerald-300 bg-emerald-50 text-emerald-900' },

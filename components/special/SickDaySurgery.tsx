@@ -1,6 +1,6 @@
 import React from 'react';
 import { Thermometer, Siren, Scissors, ClipboardCheck } from 'lucide-react';
-import { SectionTitle, DataTable, Card, Bullets } from './ui';
+import { SectionTitle, DataTable, Card, Bullets } from '../shared/ui';
 
 const sadmans = [
   ['S', 'Sülfonilüreler', 'Hipoglisemi'],

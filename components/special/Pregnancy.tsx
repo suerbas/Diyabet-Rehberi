@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Baby, FlaskConical, Pill, RotateCcw, CalendarCheck } from 'lucide-react';
-import { SectionTitle, DataTable, Card, Bullets, NumField, parseNum } from './ui';
+import { SectionTitle, DataTable, Card, Bullets, NumField, parseNum } from '../shared/ui';
 
 type Verdict = { title: string; detail: string; tone: string };
 const tones = {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { School, Siren, Search, Ruler } from 'lucide-react';
-import { SectionTitle, DataTable, Card, Bullets } from './ui';
+import { SectionTitle, DataTable, Card, Bullets } from '../shared/ui';
 
 const Pediatric: React.FC = () => (
   <div className="max-w-5xl mx-auto space-y-10">

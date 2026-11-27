@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Syringe, Plane, HeartPulse, Calculator } from 'lucide-react';
-import { SectionTitle, DataTable, Card, Bullets, NumField, parseNum } from './ui';
+import { SectionTitle, DataTable, Card, Bullets, NumField, parseNum } from '../shared/ui';
 
 const steroids = [
   { id: 'pred', label: 'Prednizolon', factor: 1 },

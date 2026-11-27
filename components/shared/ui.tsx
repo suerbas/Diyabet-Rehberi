@@ -10,7 +10,7 @@ export const SectionTitle: React.FC<{ icon?: React.ReactNode; children: React.Re
   </div>
 );
 
-export const Card: React.FC<{ title?: string; tone?: 'plain' | 'red' | 'amber' | 'green' | 'sky'; children: React.ReactNode }> = ({ title, tone = 'plain', children }) => {
+export const Card: React.FC<{ title?: string; tone?: 'plain' | 'red' | 'amber' | 'green' | 'sky'; children: React.ReactNode; className?: string }> = ({ title, tone = 'plain', children, className = '' }) => {
   const tones = {
     plain: 'bg-white border-slate-200',
     red: 'bg-rose-50 border-rose-200',
@@ -19,7 +19,7 @@ export const Card: React.FC<{ title?: string; tone?: 'plain' | 'red' | 'amber' |
     sky: 'bg-sky-50 border-sky-200',
   };
   return (
-    <div className={`border rounded-xl p-5 shadow-sm ${tones[tone]}`}>
+    <div className={`border rounded-xl p-5 shadow-sm ${tones[tone]} ${className}`}>
       {title && <h4 className="font-bold text-slate-900 mb-2">{title}</h4>}
       <div className="text-sm text-slate-700">{children}</div>
     </div>
@@ -37,7 +37,7 @@ export const Bullets: React.FC<{ items: React.ReactNode[] }> = ({ items }) => (
   </ul>
 );
 
-export const DataTable: React.FC<{ head: string[]; rows: React.ReactNode[][] }> = ({ head, rows }) => (
+export const DataTable: React.FC<{ head: string[]; rows: React.ReactNode[][]; firstColBold?: boolean }> = ({ head, rows, firstColBold = true }) => (
   <div className="overflow-x-auto bg-white border border-slate-200 rounded-xl shadow-sm">
     <table className="w-full text-sm">
       <thead className="bg-slate-50 text-slate-600 text-left">
@@ -46,7 +46,9 @@ export const DataTable: React.FC<{ head: string[]; rows: React.ReactNode[][] }> 
       <tbody>
         {rows.map((r, i) => (
           <tr key={i} className="border-t border-slate-100 align-top">
-            {r.map((c, j) => <td key={j} className={`p-3 ${j === 0 ? 'font-semibold text-slate-900' : 'text-slate-700'}`}>{c}</td>)}
+            {r.map((c, j) => (
+              <td key={j} className={`p-3 ${j === 0 && firstColBold ? 'font-semibold text-slate-900' : 'text-slate-700'}`}>{c}</td>
+            ))}
           </tr>
         ))}
       </tbody>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Moon, AlertOctagon, Calculator } from 'lucide-react';
-import { SectionTitle, DataTable, Card, Bullets, NumField, parseNum } from './ui';
+import { SectionTitle, DataTable, Card, Bullets, NumField, parseNum } from '../shared/ui';
 
 const round = (n: number) => Math.round(n);
 

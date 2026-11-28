@@ -61,7 +61,7 @@ export const drugGroups: DrugGroup[] = [
     items: [
       { key: 'gliklazid', label: 'Gliklazid', dose: 'MR: 30-120 mg/gün, kahvaltıda tek doz. Standart 80 mg tablet: 80-240 mg/gün, 1-2 doz.', note: 'Sınıf içinde hipoglisemi riski en düşük seçeneklerden biridir.', renal: 'eGFR 30-60: doz %50 azaltılır · < 30: tercihen kullanılmaz' },
       { key: 'glimepirid', label: 'Glimepirid', dose: '1 mg ile başla → 1-8 mg/gün, kahvaltıda tek doz.', renal: 'eGFR < 30: kullanılmaz' },
-      { key: 'glipizid', label: 'Glipizid', dose: 'Kontrollü salınımlı: 5-10 mg/gün, kahvaltıda tek doz.', renal: 'eGFR 30-60: doz %50 azaltılır · < 30: tercihen kullanılmaz' },
+      { key: 'glipizid', label: 'Glipizid', dose: 'Kontrollü salınımlı form: 5-10 mg/gün, günde 1 kez kahvaltıdan önce veya kahvaltıda.', note: 'Türkiye’de yalnızca kontrollü salınımlı formu ruhsatlıdır.', renal: 'eGFR 30-60: doz %50 azaltılır · < 30: tercihen kullanılmaz' },
       { key: 'glibenklamid', label: 'Glibenklamid', dose: '2,5-10 mg/gün, 1-2 doz, kahvaltıda (gerekirse akşam).', note: 'Uzamış hipoglisemi riski yüksektir; yaşlıda kaçınılır.', renal: 'eGFR 30-60: mümkünse kullanılmaz, gerekirse doz %50 · < 30: kontrendike' },
       { key: 'glibornurid', label: 'Glibornurid', dose: '12,5-75 mg/gün, 1-2 doz, kahvaltıda.' },
       { key: 'klorpropamid', label: 'Klorpropamid', dose: NOT_IN_TEMD, note: 'Eski kuşak, çok uzun etkili; uzamış hipoglisemi riski nedeniyle güncel tedavide yeri yoktur.' },

@@ -139,7 +139,7 @@ const drugData: DrugClass[] = [
     hba1c: '%1,0-2,0',
     hypo: { text: 'Yüksek', effect: 'kotu' },
     weight: { text: 'Artış', effect: 'kotu' },
-    renal: 'eGFR 30-60’ta gliklazid dozu %50 azaltılır · < 30’da kullanılmaz',
+    renal: 'Gliklazid: eGFR 30-60’ta doz %50 azaltılır, < 30’da tercihen kullanılmaz · Glimepirid: < 30’da kullanılmaz',
     agents: [
       { name: 'Gliklazid MR', brands: 'Diamicron MR, Betanorm MR', dose: '30-120 mg günde 1 kez, kahvaltıda' },
       { name: 'Glimepirid', brands: 'Amaryl, Glimax', dose: '1 mg ile başla; 1-8 mg günde 1 kez, kahvaltıda' },
